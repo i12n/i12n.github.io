@@ -30,17 +30,19 @@
     <hr>
     <div class="pagination">
       <ul>
-      {% if page.previous %}
-        <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}">&larr; 上一篇</a></li>
+         <ul>
+     {% if page.next %}
+        <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">&larr;上一篇 </a></li>
       {% else %}
-        <li class="prev disabled"><a>&larr; 上一篇</a></li>
+        <li class="next disabled"><a>&larr;上一篇 </a>
       {% endif %}
-        <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">更多</a></li>
-      {% if page.next %}
-        <li class="next"><a href="{{ BASE_PATH }}{{ page.next.url }}" title="{{ page.next.title }}">下一篇 &rarr;</a></li>
+	  <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">更多</a></li>
+	  {% if page.previous %}
+        <li class="prev"><a href="{{ BASE_PATH }}{{ page.previous.url }}" title="{{ page.previous.title }}"> 下一篇&rarr;</a></li>
       {% else %}
-        <li class="next disabled"><a>下一篇 &rarr;</a>
+        <li class="prev disabled"><a> 下一篇&rarr;</a></li>
       {% endif %}
+      </ul>
       </ul>
     </div>
     <hr>
