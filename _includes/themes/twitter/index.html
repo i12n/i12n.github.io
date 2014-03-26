@@ -33,15 +33,15 @@
      
         
       {% if site.posts.first.next %}
-        <li class="next"><a href="{{ BASE_PATH }}{{ site.posts.first.next.url }}" title="{{ site.posts.first.next.title }}">&larr;下一篇 </a></li>
+        <li class="next"><a href="{{ BASE_PATH }}{{ site.posts.first.next.url }}" title="{{ site.posts.first.next.title }}">&larr;上一篇 </a></li>
       {% else %}
-        <li class="next disabled"><a>&larr;下一篇 </a>
+        <li class="next disabled"><a>&larr;上一篇 </a>
       {% endif %}
 	  <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">更多</a></li>
 	  {% if site.posts.first.previous %}
-        <li class="prev"><a href="{{ BASE_PATH }}{{ site.posts.first.previous.url }}" title="{{ site.posts.first.previous.title }}"> 上一篇&rarr;</a></li>
+        <li class="prev"><a href="{{ BASE_PATH }}{{ site.posts.first.previous.url }}" title="{{ site.posts.first.previous.title }}"> 下一篇&rarr;</a></li>
       {% else %}
-        <li class="prev disabled"><a> 上一篇&rarr;</a></li>
+        <li class="prev disabled"><a> 下一篇&rarr;</a></li>
       {% endif %}
       </ul>
     </div>
