@@ -12,7 +12,7 @@ title : BloGe
 tagline: Site Tagline
 author :
   name : YeGe Blog
-  email : blah@email.test
+  email : gewenmao@gmail.com
   github : username
   twitter : username
   feedburner : feedname
@@ -82,7 +82,7 @@ JB :
   comments :
     provider : false 
     disqus :
-      short_name : jekyllbootstrap
+      short_name : YeGe'Blog
     livefyre :
       site_id : 123
     intensedebate :
