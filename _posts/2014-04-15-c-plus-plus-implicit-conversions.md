@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "C++中的隐式类型转换"
-description: "CPP"
+description: CPP
 category: 
 tags: [ construction, operators ]
 ---
