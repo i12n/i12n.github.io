@@ -54,5 +54,4 @@ C++ 编译器在处理不同数据类型之间会执行类型转换，其中包�
 
 用explicit 声明construction 禁止隐式类型转换，而在C++提供的智能指针std::auto_ptr 的construction是被explicit声明的。 
 还要避免声明隐式类型转换操作符而改用函数，在std::string 中 从string Object 到C-style char* 的转换是用成员函数c_str 而不是隐式类型转换函数。
-但是，隐式类型转换操作符并不是一无是处，它在仿函数中有应用。
 
