@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "C++中的隐式类型转换"
-description: CPP
-category: 
+description: ""
+category: CPP
 tags: [ construction, operators ]
 ---
 {% include JB/setup %}
