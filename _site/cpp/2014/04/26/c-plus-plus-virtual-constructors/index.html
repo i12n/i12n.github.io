@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta name="baidu-site-verification" content="pfxBYSccpl" />
+    <meta charset="utf-8">
+    <title>YeGe'Blog-C++中的虚拟构造函数</title>
+    <meta name="description" content="">
+    <meta name="author" content="YeGe Blog">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">BloGe</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">导航</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">标签</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h4>C++中的虚拟构造函数 </h4>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2014-04-26</span>
+    </div>
+    <div class="content">
+      <p>构造函数虚化(virtual constructors)是指某种函数根据输入产生不同类型的对象，在设计模式的几个创建型模式中，都涉及了构造函数的虚化。 简单工厂设计模式(又叫做静态工厂方法，不属于23种GOF设计模式)，便是以构造函数虚化进行的。</p>
+
+<p>以简单工厂设计模式为例，水果商店能够提供水果，顾客通过水果商店购买水果。FruitShop Fruit Apple Banana 构成简单工厂模式。 其中FruitShop 对应工厂，Fruit对应抽象产品，Apple和 Banana 对应具体产品。 FruitShop 的 getFruit 方法产生不同类型的水果对象，按需提供不同的对象，实现了构造函数的虚拟化。</p>
+
+<p><img src="/assets/images/2014042601.png" alt="" /></p>
+
+<pre><code>class Fruit{//抽象水果类，对应产品 
+    public:     
+        virtual void showName()=0;
+        virtual ~Fruit(){};    
+};
+class Apple:public Fruit{//苹果类，对应具体产品 
+    public:
+	    Apple():name(&quot;Apple&quot;){};
+	    void showName(){std::cout&lt;&lt;&quot;Fruit::&quot;&lt;&lt;name&lt;&lt;std::endl;};
+    private:
+	    std::string name;
+};
+class Banana:public Fruit{//香蕉类，对应具体产品 
+    public:
+	    Banana():name(&quot;Banana&quot;){};
+	    void showName(){std::cout&lt;&lt;&quot;Fruit::&quot;&lt;&lt;name&lt;&lt;std::endl;};
+    private:
+		std::string name;
+};
+class FruitShop{//水果商店类，对应工厂 
+    public:
+        static Fruit *getFruit(int fruitType){//获取具体水果 
+        switch(fruitType){
+            case 1: return new Apple(); 
+	        default: return new Banana();
+        }
+    }
+};
+
+class Client{//顾客类 
+    public:
+        void buyFruit(int fruitType){
+        basket.push_back(FruitShop::getFruit(fruitType));
+    }
+    void hasFuit(){
+        for(std::vector&lt; Fruit * &gt;::iterator it=basket.begin();it&lt;basket.end();++it){
+            (*it)-&gt;showName();
+        }
+    }
+    private:
+        std::vector&lt; Fruit * &gt;basket;
+};
+
+Client client;
+client.buyFruit(1);// Apple
+client.buyFruit(1);// Apple
+client.buyFruit(0);// Banana
+client.hasFuit();</code></pre>
+
+<p>对复制构造函数虚化(virtual copy constructors)，会返回一个指向自身新副本的指针。在Book类中，clone 方法返回的是自身的一个新副本的指针，而且对象是通过复制构造函数来生成的。 在设计模式中的原型模式使用了复制构造函数虚化方法。</p>
+
+<pre><code>class Book{
+    public:
+        Book(std::string _bookname,std::string _author):bookname(_bookname),author(_author){}
+	    void showBook(){
+            std::cout&lt;&lt;&quot;bookname  &quot;&lt;&lt;bookname&lt;&lt;std::endl;
+            std::cout&lt;&lt;&quot;bookauthor  &quot;&lt;&lt;author&lt;&lt;std::endl;
+        };
+        Book *clone(){
+            return new Book(*this);
+        }
+    private:
+        std::string bookname;
+        std::string author;           
+};
+
+Book book(&quot;One Hundred Years of Solitude&quot;,&quot;Gabriel García Márquez&quot;);
+Book *bookcopy=book.clone();
+book.showBook();
+bookcopy-&gt;showBook();</code></pre>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#cpp-ref">
+    		cpp <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#construction-ref">construction <span>3</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+         <ul>
+     
+        <li class="next"><a href="/design%20patterns/2014/04/26/design-patterns-factory-method" title="设计模式：工厂方法">&larr;上一篇 </a></li>
+      
+	  <li><a href="/archive.html">更多</a></li>
+	  
+        <li class="prev"><a href="/cpp/2014/04/21/c-plus-plus-data-members-layout" title="C++中数据成员的布局"> 下一篇&rarr;</a></li>
+      
+      </ul>
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 YeGe Blog
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

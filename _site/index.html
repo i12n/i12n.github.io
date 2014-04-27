@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta name="baidu-site-verification" content="pfxBYSccpl" />
+    <meta charset="utf-8">
+    <title>YeGe'Blog-首页</title>
+    
+    <meta name="author" content="YeGe Blog">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">BloGe</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">导航</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">标签</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h4>设计模式：工厂方法 </h4>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2014-04-26</span>
+    </div>
+    <div class="content">
+      <p>工厂方法设计模式是一种创建型模式，定义一个创建对象的接口，让子类决定实例化哪一个类。工厂方法不再将与特定应用有关的类绑定到代码中，代码仅处理Product接口；工厂方法要为特定的ConcreteProduct创建Creator的子类。</p>
+
+<p>1.Product 定义工厂方法所创建对象的接口。</p>
+
+<pre><code>class Fruit{//抽象水果类，对应Product 
+public:     
+	virtual void showName()=0;
+	virtual ~Fruit(){};    
+};</code></pre>
+
+<p>2.ConcreteProduct 实现Product接口</p>
+
+<pre><code>class Apple:public Fruit{//苹果类，对应ConcreteProduct 
+public:
+	Apple():name(&quot;Apple&quot;){};
+	void showName(){std::cout&lt;&lt;&quot;Fruit::&quot;&lt;&lt;name&lt;&lt;std::endl;};
+private:
+	std::string name;
+};
+class Banana:public Fruit{//香蕉类，对应ConcreteProduct 
+public:
+	   Banana():name(&quot;Banana&quot;){};
+	   void showName(){std::cout&lt;&lt;&quot;Fruit::&quot;&lt;&lt;name&lt;&lt;std::endl;};
+private:
+		std::string name;
+};</code></pre>
+
+<p>3.Creator 声明工厂方法，调用工厂方法创建Product对象。</p>
+
+<pre><code>class FruitShop{//水果商店类，对应Creator
+public:
+	 virtual Fruit *getFruit()=0;
+	 virtual ~FruitShop(){};
+};</code></pre>
+
+<p>4.ConcreteCreator 重定义工厂方法返回 ConcreteProduct 实例</p>
+
+<pre><code>class AppleShop:public FruitShop{//苹果商店，对应ConcreteProduct
+public:
+		Fruit *getFruit(){
+			  return new Apple(); 
+		}
+};
+
+class BananaShop:public FruitShop{//香蕉商店，对应ConcreteProduct
+public:
+		Fruit *getFruit(){
+			  return new Banana(); 
+		}
+};</code></pre>
+
+<p>5.以上相关类的类图 <img src="/assets/images/2014042602.png" alt="" /></p>
+
+<p>6.通过 FruitShop 获取水果，而无需知道具体的水果类。</p>
+
+<pre><code>FruitShop *shop=new AppleShop();
+std::vector&lt; Fruit * &gt;basket;
+basket.push_back(shop-&gt;getFruit());//获取苹果
+delete shop;
+shop=new BananaShop();
+basket.push_back(shop-&gt;getFruit());//获取香蕉
+for(std::vector&lt; Fruit * &gt;::iterator it=basket.begin();it&lt;basket.end();++it)
+(*it)-&gt;showName();</code></pre>
+
+<p>7.不难发现， ConcreteProduct 的产生需要与之对应的ConcreteCreator ，也就是说当出现了新的水果时，就需要建立相对应的商店。为了避免产生大量的ConcreteCreator在C++中可以使用模板来生成 ConcreteProduct 对象。</p>
+
+<pre><code>template&lt;typename T&gt;
+class StandardFruitShop:public FruitShop{
+public:
+	   virtual Fruit *getFruit();
+
+};
+template&lt;typename T&gt;
+Fruit * StandardFruitShop&lt;T&gt;::getFruit(){
+	   return new T;
+}
+
+StandardFruitShop&lt;Apple&gt; *appleShop=new StandardFruitShop&lt;Apple&gt;();//苹果商店
+Fruit *apple=appleShop-&gt;getFruit();//获取苹果
+apple-&gt;showName();</code></pre>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#design patterns-ref">
+    		design patterns <span>1</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#creational patterns-ref">creational patterns <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+     
+        
+      
+        <li class="next disabled"><a>&larr;上一篇 </a>
+      
+	  <li><a href="/archive.html">更多</a></li>
+	  
+        <li class="prev"><a href="/cpp/2014/04/26/c-plus-plus-virtual-constructors" title="C++中的虚拟构造函数"> 下一篇&rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+</div>
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 YeGe Blog
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

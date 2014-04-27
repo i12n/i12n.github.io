@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta name="baidu-site-verification" content="pfxBYSccpl" />
+    <meta charset="utf-8">
+    <title>YeGe'Blog-C++中的引用</title>
+    <meta name="description" content="">
+    <meta name="author" content="YeGe Blog">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">BloGe</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">导航</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">标签</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h4>C++中的引用 </h4>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2014-03-25</span>
+    </div>
+    <div class="content">
+      <p>引用是已经定义的变量的别名，主要用于函数的参数传递和函数的返回值等。</p>
+
+<h4 id="">引用的注意事项</h4>
+
+<ul>
+<li>引用必须在声明的时候进行初始化，不存在空引用。</li>
+
+<li>初始化之后就不能改变引用关系。</li>
+
+<li>对引用的任何操作都是在对变量本身进行的操作，与指针类似，但形式更自然。</li>
+
+<li>引用更接近 const pointer 指针，因为 const 限制的变量只能在创建时初始化，且在变量初始化后不能再更改。</li>
+
+<li>引用非常适合结构和类，而不是基本的内置类型。</li>
+</ul>
+
+<h4 id="_2">引用与指针的区别</h4>
+
+<ul>
+<li>
+<p>引用形式更自然，在实现某些操作符(例如赋值)时要用引用，会方便理解与使用。例如：</p>
+
+<pre><code>vector&lt;int&gt; v[10];
+v[1]=9;  //赋值操作符用引用
+//如果赋值操作符使用指针则
+*v[1]=9; //赋值操作符用指针</code></pre>
+</li>
+
+<li>
+<p>引用没有空引用，指针有空指针。因此在使用指针的时候就要测试指针是否有效，而引用不需要测试。</p>
+</li>
+
+<li>
+<p>初始化之后，引用不能更改引用关系，而指针可以改变其指向的对象。</p>
+</li>
+
+<li>
+<p>数组做函数的参数时，只能用指针，而不能用引用。</p>
+</li>
+</ul>
+
+<h4 id="_3">引用在函数中的应用</h4>
+
+<p>引用在函数中可以做函数的参数，也可做返回值的类型。使用引用的原因有一下几种情况：</p>
+
+<ul>
+<li>传递非内置数据类型时，使用引用效率高</li>
+
+<li>对虚函数多态进行支持</li>
+
+<li>拷贝构造函数不能用的时候，要考虑引用传值</li>
+
+<li>在一些情况时，避免传递对象被切割，使用引用传值</li>
+
+<li>基于以上几种原因，通常情况下：拷贝构造函数必须使用引用做参数；赋值操作符返回的是引用；输入输出操作符返回的是引用；异常捕获中catch的参数为引用； 智能指针auto_ptr做函数参数时用引用；智能指针对操作符-&gt;解引时返回值为引用。</li>
+
+<li>当数组做参数时，内置数据类型做参数时，STL 迭代器做参数时，不能或不建议用引用。</li>
+</ul>
+
+<h5 id="1_">1. 引用做为函数参数</h5>
+
+<h5 id="1_byvalue__byreference_">(1) by-value 和 by-reference 区别</h5>
+
+<p>函数传递参数的方式有： <code> by-value </code> 和 <code> by-reference </code></p>
+
+<p><code>by-value</code>按值传递参数要对数据进行拷贝，将实参的数据拷贝到函数中，在函数中是对实参的拷贝进行操作，因此不影响实参本身。 当参数的数据量较大时，这种拷贝势必要占用更大的存储空间，因此增加了函数的开销。 为了解决这一问题，可以传递指针，通过访问地址的形式减小开销。在C语言中只有按值传递一种方式，传递指针也是按值传递的一种，只不过拷贝的数据是地址，从而减小了数据量。 在C++中可以传递引用的方式。</p>
+
+<p><code>by-reference</code>引用作为函数的参数，使得函数的变量成为调用程序中的变量的别名，这种传递参数的方法称为引用传递。 在函数中，对实参引用进行的操作，就是对实参本身进行操作，会影响实参本身。以 <code>by-reference</code> 传参的两个重要原因是 其一，不需要拷贝，效率高；另外，对虚函数多态提供支持。</p>
+
+<ul>
+<li>
+<p>定义一个函数:</p>
+
+<pre><code>//不推荐内置数据类型 by-reference 方式传参
+void swap(int &amp;x,int &amp;y){
+	int temp=x;
+	x=y;
+	y=temp;
+}</code></pre>
+</li>
+
+<li>
+<p>调用这个函数:</p>
+
+<pre><code>int a=1,b=2;
+swap(a,b);//call function swap(int &amp;,int &amp;)
+std::cout&lt;&lt;a&lt;&lt;&quot; &quot;&lt;&lt;b&lt;&lt;std::endl;// print 2 1</code></pre>
+</li>
+</ul>
+
+<p>以 <code>by-value</code> 和 <code>by-reference</code> 两种方式传值的函数，在调用函数的形式上看起来是相同的，只能通过函数原型或函数定义进行区别。 引用传递和按值传递在函数重载时，被视为同一种特征标。</p>
+
+<h5 id="2_byreferencetoconst__byreferencetononconst_">(2) by-reference-to-const 与 by-reference-to-non-const 区别</h5>
+
+<p><code> by-reference-to-non-const </code>允许函数在内部对传递的实参进行修改操作，传递的实参不能为 reference-to-const。</p>
+
+<p><code> by-reference-to-const </code>不允许在函数内部对传递的实参进行修改操作，因此在很多时候可以取代 <code>by-value</code> 传值方式来提高效率，传递的实参可以为 reference-to-non-const 。 当实参与形参类型不匹配时，C++会进行类型转换来生成相匹配的临时变量，将临时变量作为实参传递；而在 <code>by-reference-to-non-const</code>的函数中是要求对实参本身进行操作， 为了消除这种矛盾，C++在 <code>by-reference-to-non-const</code> 传递中禁止创建临时变量。</p>
+
+<ul>
+<li>
+<p>在上例中如果这样调用函数将报错：</p>
+
+<pre><code>double a=1,b=2;
+swap(a,b);//call function swap(int &amp;,int &amp;) :invalid initialization of non-const reference of type 'int&amp;' from a temporary of type 'int'</code></pre>
+</li>
+</ul>
+
+<p>使用 <code>by-reference-to-const</code> 传递引用不存在这个问题，因为 const 限定了在函数中不能修改变量，即使传递的是临时变量也无妨。生成临时变量的情况包括两种:</p>
+
+<ul>
+<li>
+<p>实参的类型正确但不是左值</p>
+
+<pre><code>swap(1,2);
+swap(a,a+b);//a,b为int型</code></pre>
+</li>
+
+<li>
+<p>实参的类型不正确,但是可以转换为正确的类型.</p>
+</li>
+</ul>
+
+<p>对于 <code>by-reference-to-const</code> 传递引用的函数，如果实参不匹配，则其行为类似于按值传递，为确保原始数据不被修改，将使用临时变量来存储值。 如果函数调用的参数不是左值或与相应的const引用类型不匹配，C++会建立正确类型的匿名变量，将函数调用的参数的值传递给该匿名变量，并让参数来引用该变量。</p>
+
+<h5 id="2_">2. 函数返回值为引用</h5>
+
+<h5 id="1__2">(1) 返回函数内部生成变量的引用</h5>
+
+<p>引用做函数的返回值时，要避免返回的是存储于栈的临时变量的引用，因为当函数执行结束时，临时变量会被释放，最终导致返回的引用不可用。 如果是存储在堆内的动态变量则可以返回它的引用。</p>
+
+<ul>
+<li>
+<p>定义一个结构体</p>
+
+<pre><code>struct Rect{
+	float width;
+	float height;
+};
+//定义一个返回引用的函数
+struct Rect &amp;get_rect(float w,float h){
+	struct Rect *r=new Rect();
+	r-&gt;width=w;
+	r-&gt;height=h;
+	std::cout&lt;&lt;r&lt;&lt;std::endl;//输出地址
+	return *r;
+}
+//调用这个函数
+struct Rect &amp;r=get_rect(1,6);//声明引用并初始化
+std::cout&lt;&lt;&amp;r&lt;&lt;std::endl;//输出地址</code></pre>
+
+<p>运行的结果是输出的地址相同</p>
+</li>
+
+<li>
+<p>如果返回值赋值给变量，则会出现一些问题</p>
+
+<pre><code>struct Rect r=get_rect(1,6);
+struct Rect t;
+t=get_rect(1,6);</code></pre>
+</li>
+</ul>
+
+<p>在这个过程中，调用了拷贝构造函数，无论r和t都与返回的引用所指向的对象不是同一个，函数返回的引用仅用来做构造函数的参数，在函数外部无法取得这个引用，所以会导致无法 delete 返回的引用所指向的对象。 在函数返回引用时，引用不能指向临时变量。</p>
+
+<h5 id="2__byreference_">(2) 返回 by-reference 传递的引用参数</h5>
+
+<p>另一种返回引用的方式，不在函数内产生对象，而是通过参数传递这个这对象，最后以引用的方式返回。</p>
+
+<ul>
+<li>
+<p>返回引用</p>
+
+<pre><code>int &amp;max(int &amp;a,int &amp;b){
+	return a&gt;b?a:b;
+}
+int a=1,b=2;
+int c=max(a,b);//与返回普通变量无较大的区别
+int &amp;d=max(a,b);//d指向数值大的那个变量b的地址，对d的操作就是对b操作</code></pre>
+</li>
+</ul>
+
+<h5 id="3_">3. 函数中的引用与指针</h5>
+
+<p>引用和指针除了做函数参数之外，还支持类的虚函数多态实现. 引用和指针作为函数参数，则可以修改变量本身的内容。如果禁止在函数中修改可以使用 const进行限制。 指针和引用做函数返回值时，应避免返回指向临时变量的指针或着引用。因为临时变量在函数运行结束后被释放。可以返回指向用new创建的指针或着引用，但是在使用结束之后，要对其释放内存(delete)。</p>
+
+<p>在引用传递过程中，函数的形参也作为局部变量，在栈中开闭内存空间，但是这时存放的是实参变量的地址，对形参的任何操作都处理成间接寻址，即通过栈中存放的地址访问主调函数中的实参变量。</p>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#cpp-ref">
+    		cpp <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#reference-ref">reference <span>2</span></a></li>
+     
+    	<li><a href="/tags.html#const-ref">const <span>4</span></a></li>
+     
+    	<li><a href="/tags.html#pointer-ref">pointer <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+         <ul>
+     
+        <li class="next"><a href="/cpp/2014/03/26/c-plus-plus-function-return-value" title="C++中的函数返回值">&larr;上一篇 </a></li>
+      
+	  <li><a href="/archive.html">更多</a></li>
+	  
+        <li class="prev disabled"><a> 下一篇&rarr;</a></li>
+      
+      </ul>
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 YeGe Blog
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

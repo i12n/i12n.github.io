@@ -1,0 +1,1336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>BloGe</title>
+        <description>BloGe - YeGe Blog</description>
+        <link>blog.yege.me</link>
+        <link>blog.yege.me</link>
+        <lastBuildDate>2014-04-27T10:40:24+08:00</lastBuildDate>
+        <pubDate>2014-04-27T10:40:24+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>设计模式：工厂方法</title>
+                <description>&lt;p&gt;工厂方法设计模式是一种创建型模式，定义一个创建对象的接口，让子类决定实例化哪一个类。工厂方法不再将与特定应用有关的类绑定到代码中，代码仅处理Product接口；工厂方法要为特定的ConcreteProduct创建Creator的子类。&lt;/p&gt;
+
+&lt;p&gt;1.Product 定义工厂方法所创建对象的接口。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Fruit{//抽象水果类，对应Product 
+public:     
+	virtual void showName()=0;
+	virtual ~Fruit(){};    
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2.ConcreteProduct 实现Product接口&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Apple:public Fruit{//苹果类，对应ConcreteProduct 
+public:
+	Apple():name(&amp;quot;Apple&amp;quot;){};
+	void showName(){std::cout&amp;lt;&amp;lt;&amp;quot;Fruit::&amp;quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;};
+private:
+	std::string name;
+};
+class Banana:public Fruit{//香蕉类，对应ConcreteProduct 
+public:
+	   Banana():name(&amp;quot;Banana&amp;quot;){};
+	   void showName(){std::cout&amp;lt;&amp;lt;&amp;quot;Fruit::&amp;quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;};
+private:
+		std::string name;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3.Creator 声明工厂方法，调用工厂方法创建Product对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class FruitShop{//水果商店类，对应Creator
+public:
+	 virtual Fruit *getFruit()=0;
+	 virtual ~FruitShop(){};
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;4.ConcreteCreator 重定义工厂方法返回 ConcreteProduct 实例&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class AppleShop:public FruitShop{//苹果商店，对应ConcreteProduct
+public:
+		Fruit *getFruit(){
+			  return new Apple(); 
+		}
+};
+
+class BananaShop:public FruitShop{//香蕉商店，对应ConcreteProduct
+public:
+		Fruit *getFruit(){
+			  return new Banana(); 
+		}
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;5.以上相关类的类图 &lt;img src=&quot;/assets/images/2014042602.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;6.通过 FruitShop 获取水果，而无需知道具体的水果类。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;FruitShop *shop=new AppleShop();
+std::vector&amp;lt; Fruit * &amp;gt;basket;
+basket.push_back(shop-&amp;gt;getFruit());//获取苹果
+delete shop;
+shop=new BananaShop();
+basket.push_back(shop-&amp;gt;getFruit());//获取香蕉
+for(std::vector&amp;lt; Fruit * &amp;gt;::iterator it=basket.begin();it&amp;lt;basket.end();++it)
+(*it)-&amp;gt;showName();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;7.不难发现， ConcreteProduct 的产生需要与之对应的ConcreteCreator ，也就是说当出现了新的水果时，就需要建立相对应的商店。为了避免产生大量的ConcreteCreator在C++中可以使用模板来生成 ConcreteProduct 对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;template&amp;lt;typename T&amp;gt;
+class StandardFruitShop:public FruitShop{
+public:
+	   virtual Fruit *getFruit();
+
+};
+template&amp;lt;typename T&amp;gt;
+Fruit * StandardFruitShop&amp;lt;T&amp;gt;::getFruit(){
+	   return new T;
+}
+
+StandardFruitShop&amp;lt;Apple&amp;gt; *appleShop=new StandardFruitShop&amp;lt;Apple&amp;gt;();//苹果商店
+Fruit *apple=appleShop-&amp;gt;getFruit();//获取苹果
+apple-&amp;gt;showName();&lt;/code&gt;&lt;/pre&gt;</description>
+                <link>blog.yege.me/design%20patterns/2014/04/26/design-patterns-factory-method</link>
+                <guid>blog.yege.me/design%20patterns/2014/04/26/design-patterns-factory-method</guid>
+                <pubDate>2014-04-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的虚拟构造函数</title>
+                <description>&lt;p&gt;构造函数虚化(virtual constructors)是指某种函数根据输入产生不同类型的对象，在设计模式的几个创建型模式中，都涉及了构造函数的虚化。 简单工厂设计模式(又叫做静态工厂方法，不属于23种GOF设计模式)，便是以构造函数虚化进行的。&lt;/p&gt;
+
+&lt;p&gt;以简单工厂设计模式为例，水果商店能够提供水果，顾客通过水果商店购买水果。FruitShop Fruit Apple Banana 构成简单工厂模式。 其中FruitShop 对应工厂，Fruit对应抽象产品，Apple和 Banana 对应具体产品。 FruitShop 的 getFruit 方法产生不同类型的水果对象，按需提供不同的对象，实现了构造函数的虚拟化。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014042601.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Fruit{//抽象水果类，对应产品 
+    public:     
+        virtual void showName()=0;
+        virtual ~Fruit(){};    
+};
+class Apple:public Fruit{//苹果类，对应具体产品 
+    public:
+	    Apple():name(&amp;quot;Apple&amp;quot;){};
+	    void showName(){std::cout&amp;lt;&amp;lt;&amp;quot;Fruit::&amp;quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;};
+    private:
+	    std::string name;
+};
+class Banana:public Fruit{//香蕉类，对应具体产品 
+    public:
+	    Banana():name(&amp;quot;Banana&amp;quot;){};
+	    void showName(){std::cout&amp;lt;&amp;lt;&amp;quot;Fruit::&amp;quot;&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;};
+    private:
+		std::string name;
+};
+class FruitShop{//水果商店类，对应工厂 
+    public:
+        static Fruit *getFruit(int fruitType){//获取具体水果 
+        switch(fruitType){
+            case 1: return new Apple(); 
+	        default: return new Banana();
+        }
+    }
+};
+
+class Client{//顾客类 
+    public:
+        void buyFruit(int fruitType){
+        basket.push_back(FruitShop::getFruit(fruitType));
+    }
+    void hasFuit(){
+        for(std::vector&amp;lt; Fruit * &amp;gt;::iterator it=basket.begin();it&amp;lt;basket.end();++it){
+            (*it)-&amp;gt;showName();
+        }
+    }
+    private:
+        std::vector&amp;lt; Fruit * &amp;gt;basket;
+};
+
+Client client;
+client.buyFruit(1);// Apple
+client.buyFruit(1);// Apple
+client.buyFruit(0);// Banana
+client.hasFuit();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对复制构造函数虚化(virtual copy constructors)，会返回一个指向自身新副本的指针。在Book类中，clone 方法返回的是自身的一个新副本的指针，而且对象是通过复制构造函数来生成的。 在设计模式中的原型模式使用了复制构造函数虚化方法。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Book{
+    public:
+        Book(std::string _bookname,std::string _author):bookname(_bookname),author(_author){}
+	    void showBook(){
+            std::cout&amp;lt;&amp;lt;&amp;quot;bookname  &amp;quot;&amp;lt;&amp;lt;bookname&amp;lt;&amp;lt;std::endl;
+            std::cout&amp;lt;&amp;lt;&amp;quot;bookauthor  &amp;quot;&amp;lt;&amp;lt;author&amp;lt;&amp;lt;std::endl;
+        };
+        Book *clone(){
+            return new Book(*this);
+        }
+    private:
+        std::string bookname;
+        std::string author;           
+};
+
+Book book(&amp;quot;One Hundred Years of Solitude&amp;quot;,&amp;quot;Gabriel García Márquez&amp;quot;);
+Book *bookcopy=book.clone();
+book.showBook();
+bookcopy-&amp;gt;showBook();&lt;/code&gt;&lt;/pre&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/26/c-plus-plus-virtual-constructors</link>
+                <guid>blog.yege.me/cpp/2014/04/26/c-plus-plus-virtual-constructors</guid>
+                <pubDate>2014-04-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中数据成员的布局</title>
+                <description>&lt;p&gt;在类中，成员函数会被编译器转换为外部函数，因此，对象中不存储成员函数， 类对象中存储的是数据成员变量以及编译器加入的数据信息等。 一个类对象所占空间的大小除了与数据成员有关系之外还与这些相关：&lt;/p&gt;
+
+&lt;p&gt;语言的额外负担：在C++中为了支持虚函数等，编译器会在类对象加入额外的信息。&lt;/p&gt;
+
+&lt;p&gt;编译器优化处理：对一些特殊情况，编译器会进行优化处理；而不同的厂商的编译器处理机制也存在着差别。&lt;/p&gt;
+
+&lt;p&gt;聚合结构边界调整：为了更有效率的存取数据，会在对象中填充额外的字节。&lt;/p&gt;
+
+&lt;p&gt;因此对于不同类型的类中，类对象的组织方式是不同的， 主要分为以下几种情况：无继承也无虚函数的类、有继承关系且无虚函数的类、有继承关系且有虚函数的类以及虚基类中。&lt;/p&gt;
+
+&lt;h5 id=&quot;1&quot;&gt;1.无继承关系且无虚函数的类&lt;/h5&gt;
+
+&lt;p&gt;在没有继承关系也无虚函数的类中，情况相当比较简单，类对象所占用的存储空间只与类的数据成员有关系。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class B{    //sizeof(B)==4
+  int b;
+};
+class C{    //sizeof(C)==1
+  char c;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但是对于一个没有任何数据成员的类，它的大小并不是0，编译器要做一些处理，加入一个隐藏的char 使对象有一个独一无二的地址。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class A{    //sizeof(A)==1
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果类成员在存在不同类型数据成员时，可能会发生边界调整，默认调成到 4的倍数。 class D{ //sizof(D)==8 int d1; char d2; };&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014042101.png&quot; alt=&quot;D object layout&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;2&quot;&gt;2.有继承关系且无虚函数的类&lt;/h5&gt;
+
+&lt;p&gt;当基类和派生类中都不存在虚函数时，派生类中既要存储基类的数据成员又要存储自己的数据成员，所占用的存储空间由这两部分决定。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class B1:public B{    //sizeof(B1)==8
+  int b1;
+};
+class C1:public C{    //sizeof(C1)==2
+  char c;
+};
+
+但是当基类无数据成员时，编译器会做出优化处理，在派生类中去掉基类中的那个char。
+
+class A1:public A{    //sizeof(A1)==1
+};
+class A2:public A{    //sizeof(A2)==1
+  char a2;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在继承过程中也会发生边界调整。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class B2:public B{    //sizeof(B2)==8
+	A a;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;3&quot;&gt;3.有继承关系且有虚函数的类&lt;/h5&gt;
+
+&lt;p&gt;虚函数的出现，在类对象中要存放一个vptr指针指向vtbl，不同编译器把vptr存放的位置不同，有的存在对象的开始位置，有的存在结束位置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class VA{   //sizeof(VA)==4
+  virtual ~VA(){}
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;VA虽然是无成员数据的类，因为有了vptr指针，就不再需要额外的一个char。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class VA1:public VA{    // sizeof(VA1)==8
+	char c1;
+};//在VA1中需要进行边界调整。
+class VB{
+  virtual ~VB(){}
+};
+class VAB:public VA,public VB{    // sizeof(VA1)==8
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014042102.png&quot; alt=&quot;VAB object layout&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;4&quot;&gt;4.虚基类&lt;/h5&gt;
+
+&lt;p&gt;虚继承中，在派生类中还需要一个指针，指向虚基类的对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class M{    // sizeof(M)==1
+  char m;
+};
+class X:virtual public M{    // sizeof(X)==8
+};
+class Y:virtual public M{    // sizeof(Y)==8
+};
+class Z:public X,public Y{    // sizeof(Z)==12
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014042103.png&quot; alt=&quot;Z object layout&quot; /&gt;&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/21/c-plus-plus-data-members-layout</link>
+                <guid>blog.yege.me/cpp/2014/04/21/c-plus-plus-data-members-layout</guid>
+                <pubDate>2014-04-21T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的虚基类</title>
+                <description>&lt;p&gt;当类的继承中出现菱形继承关系时，会在最底层派生类中出现同一个基类的两个副本， 例如AB类对象中会保存两份Base对象。可以用虚基类的方式解决这个问题。所谓虚基类是指Base这个类， SubA和SubB两个子类可以以虚继承的方式来继承。而AB类以正常方式继承SubA和SubB类。&lt;/p&gt;
+
+&lt;p&gt;虚基类改变了基类被初始化的方式。在非虚基类继承时， 子类只能在其构造函数初始化列表调用即时基类构造函数来完成即时基类的初始化(如果没有指定即时基类的构造函数，则调用默认构造函数完成初始化工作，即时基类是指最直接的基类)。 也就是说，AB只能调用SubA和SubB的构造函数，而不能越过中间类(SubA和SubB)调用Base的构造函数。 在这种情况下，只能通过传值给SubA和SubB的构造函数，进而由SubA和SubB来初始化Base。 在虚基类继承时改变了这个规则。 当基类是虚拟时，禁止将信息通过中间类自动传递给基类，而是允许初始化列表可以直接调用虚基类的构造函数(如果没有指定虚基类的构造函数，则调用默认构造函数完成初始化工作)。 也就是说，AB类初始化列表可以直接调用Base的构造函数，而AB类通过SubA和SubB传递的关于构造Base的信息将不起作用。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2014041702.png&quot; alt=&quot;虚基类类图&quot; /&gt; &lt;img src=&quot;/assets/images/2014041701.png&quot; alt=&quot;虚基类内存布局&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;虚基类的内存布局，会有一些特殊的地方。 首先为了支持虚基类，派生类的对象要额外存储一个指针，这个指针指向虚基类对象的地址或偏移地址。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Base{
+  public:
+    Base(int i=0):i(i){};
+    int getBase(){return i;};
+  private:
+    int i; 
+};
+class SubA:virtual public Base{
+  public:
+    SubA(int i,int a):a(a),Base(i){ };
+    void showSubA(){
+        std::cout&amp;lt;&amp;lt;&amp;quot;Base:&amp;quot;&amp;lt;&amp;lt;getBase()&amp;lt;&amp;lt;&amp;quot; SubA:&amp;quot;&amp;lt;&amp;lt;a&amp;lt;&amp;lt;std::endl;
+    }
+  private:
+    int a;
+};
+class SubB:virtual public Base{
+  public:
+    SubB(int i,int b):b(b),Base(i){ };
+    void showSubB(){
+        std::cout&amp;lt;&amp;lt;&amp;quot;Base:&amp;quot;&amp;lt;&amp;lt;getBase()&amp;lt;&amp;lt;&amp;quot; SubB:&amp;quot;&amp;lt;&amp;lt;b&amp;lt;&amp;lt;std::endl;
+    };
+  private:
+    int b;
+};
+class AB: public SubA, public SubB{
+  public:
+    //use default Base constructor
+    AB(int a,int i1,int b,int i2,int ab):SubA(a,i1),SubB(b,i2),ab(ab){}; //#1
+    AB(int a,int b,int i):Base(i),SubA(a,a),SubB(b,b){};            //#2
+    void showAB(){
+        std::cout&amp;lt;&amp;lt;&amp;quot;showAB&amp;quot;&amp;lt;&amp;lt;std::endl;SubA::showSubA();SubB::showSubB();
+    };
+  private:
+    int ab;
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; AB ab(1,2,3,4,5);     //#1
+ ab.showAB();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Result:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Base:0 SubA:2
+Base:0 SubA:4&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;AB ab(1,2,3);     //#2
+ab.showAB();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Result:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Base:3 SubA:1
+Base:3 SubA:2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;虚继承要在继承时加关键字virtual 如代码所示:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class SubA:virtual public Base{………}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果将不使用虚基类，则上面的代码会在#2处报编译错:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;type `class Base' is not a direct base of `AB'&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也就是说禁止AB的初始化列表中跨过中间类而用Base的构造函数。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/17/c-plus-plus-virtual-base-classes</link>
+                <guid>blog.yege.me/cpp/2014/04/17/c-plus-plus-virtual-base-classes</guid>
+                <pubDate>2014-04-17T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的隐式类型转换</title>
+                <description>&lt;p&gt;C++ 编译器在处理不同数据类型之间会执行类型转换，其中包括以下四种情况： 赋值时进行的转换 将一种数据类型赋值给另一种数据类型时发生类型转换 表达式中的转换 统一表达式包含两种不同的算术类型时，但数据类型相同时会出现自动提升变换(例如将 bool、char、unsigned char、signed char、short 转换为int 等)；数据类型不同时会出现其他一些变换(如 标准转换和用户自定义的转换) 传递参数时的转换 在函数传递参数时，会发生类型转换 强制类型转换 用户进行的显示类型转换 除了强制类型转换之外，其余都是C++编译器进行的隐式类型转换。C++ 隐式类型转换可以促进计算机的计算效率(如提升转换中的 int 提升转换，把数据类型转换为计算机的最自然的类型int ，会方便计算机处理)；C++ 隐式类型转换也可以为函数的调用提供便利。但是C++ 的转型在某些情况下，也会造成数据信息丢失(例如将int 转换为char)，对于C++ 内置数据类型之间的转型，用户是无法控制的，但是用户可以控制自定义数据类型的隐式类型转换。C++ 为自定义数据类型提供了两种方法来允许编译器执行隐式类型转换：单自变量constructions 和隐式类型转换操作符。&lt;/p&gt;
+
+&lt;h5 id=&quot;1_constructions_&quot;&gt;1.单自变量 constructions 隐式转换&lt;/h5&gt;
+
+&lt;p&gt;单自变量 constructions 隐式转换是指能够以单一自变量成功调用的constructions。 在constructions声明时可能有多个参数，但是除了第一个参数之外都有默认值。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;template &amp;lt;typename T&amp;gt;
+class SmartPointer{
+  public:
+    SmartPointer(T *pointer=0):pointer(pointer){};
+    T &amp;amp;operator*() const{return *pointer;};
+    T *operator-&amp;gt;() const{return pointer;};
+  private:
+    T *pointer;      
+};
+
+int i=2014;
+int *p=&amp;amp;i;
+SmartPointer&amp;lt;int&amp;gt; data=p;    // 类型转换 将int * 转换为 SmartPointer&amp;lt;int&amp;gt;
+std::cout&amp;lt;&amp;lt;*data&amp;lt;&amp;lt;std::endl;  // print 2014&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;2&quot;&gt;2.隐式类型转换操作符&lt;/h5&gt;
+
+&lt;p&gt;隐式类型转换操作符是在关键词operator之后加上一个类型名，返回值类型就是这个类型名，形如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;operator return_type()  &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在上例中 SmartPointer 加入 成员函数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;operator T() const {return *pointer;} //隐式类型转换操作符&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;调用以下代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int i=2014;
+int *p=&amp;amp;i;
+SmartPointer&amp;lt;int&amp;gt; data=p;
+std::cout&amp;lt;&amp;lt;data&amp;lt;&amp;lt;std::endl; //print 2014  //调用 operator T() const  进行类型转换 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;3&quot;&gt;3.要避免提供隐式类型转换&lt;/h5&gt;
+
+&lt;p&gt;用explicit 声明construction 禁止隐式类型转换，而在C++提供的智能指针std::auto_ptr 的construction是被explicit声明的。 还要避免声明隐式类型转换操作符而改用函数，在std::string 中 从string Object 到C-style char* 的转换是用成员函数c_str 而不是隐式类型转换函数。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/15/c-plus-plus-implicit-conversions</link>
+                <guid>blog.yege.me/cpp/2014/04/15/c-plus-plus-implicit-conversions</guid>
+                <pubDate>2014-04-15T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的 new 和 delete 操作符</title>
+                <description>&lt;h5 id=&quot;new_operator__operator_new_&quot;&gt;new operator 与 operator new 区别&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;new operator&lt;/code&gt; 就是用于创建堆内存对象 (heap-based object) 的 new，它首先分配堆内存空间，然后调用构造函数初始化内存空间。它是程序内建的，不能被改变。 因为无法直接调用对象初始化所必需的构造函数，所以建一个 heap-based object 需要使用 &lt;code&gt;new operator&lt;/code&gt; 。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;operator new&lt;/code&gt; 则是用于分配原始的未设初值的堆内存空间，与 c 语言中的 malloc 类似。也就是new operator 在分配堆内存空间时，要调用operator new来实现。 &lt;code&gt;operator new&lt;/code&gt; 是可以被重载的。函数原型为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void *operator new(size_t size) throw(std::bad_alloc)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;operator new&lt;/code&gt; 有多种重载版本，例如placement new，但每一个版本的第一个参数都是 size ，表示申请分配内存的大小。例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;char *p= (char *)operator new(1); //使用 operator new 申请一个字节空间
+p[0]='8';
+std::cout&amp;lt;&amp;lt;p[0]&amp;lt;&amp;lt;std::endl; //print 8&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;禁止一个类产生 heap-based object 方法就是将 &lt;code&gt;operator new&lt;/code&gt; 私有化，这样就禁止了 &lt;code&gt;new operator&lt;/code&gt; 使用 &lt;code&gt;operator new&lt;/code&gt; ，使 &lt;code&gt;new operator&lt;/code&gt; 分配堆内存空间失败。例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Object{
+  private:
+        static void *operator new(size_t size);
+};
+Object *object=new Object();//编译错误 `static void* Object::operator new(size_t)' is private&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;也就是说在 &lt;code&gt;new operator&lt;/code&gt; 中会调用 &lt;code&gt;operator new&lt;/code&gt; 来分配内存空间。&lt;/p&gt;
+
+&lt;h5 id=&quot;placement_new__new&quot;&gt;placement new 特定位置上的 new&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;placement new&lt;/code&gt; 用于在已经分配的内存空间中构造对象。它通过调用一个构造函数来初始化一个对象，然后将这个对象放在一块已经分配好的原始内存上(这块内存也可是栈内存)。 在STL中它的用途之一就是负责在 vector 的未使用的空间上创建对象。使用 &lt;code&gt;placement new&lt;/code&gt; 需要使用头文件 &lt;code&gt;#include&amp;lt;new&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void *operator new(std::size_t size,void *pMemory) throw();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;pMemory 用于指向内存空间&lt;/p&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#include&amp;lt;new&amp;gt;
+char buff[100];
+double *pd;
+pd=new(buff) double[3];  //类似于 在new double[3]; 基础上加了个参数 buff
+pd[0]=1;
+std::cout&amp;lt;&amp;lt;pd[0]&amp;lt;&amp;lt;std::endl;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;delete&quot;&gt;释放内存delete相关&lt;/h5&gt;
+
+&lt;p&gt;与&lt;code&gt;new operator&lt;/code&gt; 、&lt;code&gt;operator new&lt;/code&gt; 和 &lt;code&gt;placement new&lt;/code&gt; 对应的是 &lt;code&gt;delete operator&lt;/code&gt;、&lt;code&gt;operator delete&lt;/code&gt; 和 &lt;code&gt;placement delete&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;delete operator&lt;/code&gt; 释放由&lt;code&gt;new operator&lt;/code&gt; 申请的内存，分为两步操作：首先调用对象的析构函数，然调用 &lt;code&gt;operator delete&lt;/code&gt;释放内存。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;operator delete&lt;/code&gt; 处理原始的为被设初值的内存，例如，释放operator new申请的内存并且这个内存未调用任何构造函数。原型为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void operator delete(void *memoryToBeDeallocated); //memoryToBeDeallocated 为要释放的内存地址&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void *buff=operator new(50*sizeof(char));//分配内存，没有调用任何ctors
+.....
+operator delete(buff);// 释放内存，未调用任何dtors
+
+placement delete 可以调用对象析构函数，而不释放内存空间，释放动作通过原始的内存地址实现。&lt;/code&gt;&lt;/pre&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/03/c-plus-plus-new-and-delete</link>
+                <guid>blog.yege.me/cpp/2014/04/03/c-plus-plus-new-and-delete</guid>
+                <pubDate>2014-04-03T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的操作符重载</title>
+                <description>&lt;h5 id=&quot;&quot;&gt;算术运算符的重载&lt;/h5&gt;
+
+&lt;p&gt;算术运算符的重载要注意返回值的类型，&lt;code&gt;+ - * /&lt;/code&gt;计算结果要以 pass-value 方式传递一个变量做返回值，这样可以对多个变量的连续运算进行支持。&lt;/p&gt;
+
+&lt;p&gt;对于数乘形式的运算 &lt;code&gt;A*k&lt;/code&gt; 可以作为类的成员函数进行重载，而 &lt;code&gt;k*A&lt;/code&gt; 无法作为类的成员函数，可以以友元函数的形式进行重载。以满足对 &lt;code&gt;A*k&lt;/code&gt; 和 &lt;code&gt;k*A&lt;/code&gt; 的支持。&lt;/p&gt;
+
+&lt;p&gt;对于前置 &lt;code&gt;++(--)&lt;/code&gt; 也要以 pass-value 方式返回一个 const value，这样禁止 i++++ 通过编译。 对于后置 &lt;code&gt;++(--)&lt;/code&gt; 要返回一个 reference-to-non-const ，对 ++++i 提供了支持。 后置 &lt;code&gt;++(--)&lt;/code&gt; 的效率要比前置 &lt;code&gt;++(--)&lt;/code&gt; 效率高。后置 &lt;code&gt;++(--)&lt;/code&gt; 需要用一个 int 做参数来区别前置 &lt;code&gt;++(--)&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  private:
+    float x;
+    float y;
+  public:
+    vector(float x,float y):x(x),y(y){};
+    vector operator+(const vector &amp;amp; v) const{//+
+        return vector(this-&amp;gt;x+v.x,this-&amp;gt;y+v.y);
+    }
+    vector operator*(float k) const{ //数乘，V*k
+		return vector(this-&amp;gt;x*k,this-&amp;gt;y*k);
+    }
+    vector &amp;amp;operator++(){//前置++ 
+        ++x;
+        ++y;
+        return *this;
+	}
+    const vector operator++(int){//后置++ 
+        vector tmp=(*this);
+        ++*this;
+        return tmp; 
+	}
+    friend vector operator *(float k,const vector &amp;amp;v);//数乘，k*V
+}
+
+vector operator*(float k,const vector &amp;amp;v){
+    return v*k;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;___&quot;&gt;输入输出操作符 &lt;code&gt;operator&amp;gt;&amp;gt;&lt;/code&gt; 和 &lt;code&gt;operator&amp;lt;&amp;lt;&lt;/code&gt;&lt;/h5&gt;
+
+&lt;p&gt;为了支持输入输出运算符，也需要这两个操作符进行重载。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  private:
+    float x;
+    float y;
+  public:
+    vector(float x,float y):x(x),y(y){};
+    std::ostream &amp;amp; operator&amp;lt;&amp;lt;(std::ostream &amp;amp;os){
+        os&amp;lt;&amp;lt;&amp;quot;(&amp;quot;&amp;lt;&amp;lt;v.x&amp;lt;&amp;lt;&amp;quot;,&amp;quot;&amp;lt;&amp;lt;v.y&amp;lt;&amp;lt;&amp;quot;)&amp;quot;;
+	}
+}
+
+vector v(1,2);
+v&amp;lt;&amp;lt;(v&amp;lt;&amp;lt;cout); //相当于 cout 在 operator&amp;lt;&amp;lt; 中做参数 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了符合 &lt;code&gt;cout&amp;lt;&amp;lt;v&lt;/code&gt; 的形式，可以以友元函数的方式对 &lt;code&gt;operator&amp;lt;&amp;lt; (operator&amp;gt;&amp;gt;)&lt;/code&gt; 重载。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  private:
+    float x;
+    float y;
+  public:
+    vector(float x,float y):x(x),y(y){};
+    friend std::ostream &amp;amp; operator &amp;lt;&amp;lt;(std::ostream &amp;amp; os,const vector &amp;amp;v)
+}
+
+std::ostream &amp;amp; operator &amp;lt;&amp;lt;(std::ostream &amp;amp; os,const vector &amp;amp;v){
+    os&amp;lt;&amp;lt;v.get_x()&amp;lt;&amp;lt;&amp;quot;,&amp;quot;&amp;lt;&amp;lt;v.get_y()&amp;lt;&amp;lt;endl;
+    return os;
+}
+vector v(1,2);
+cout&amp;lt;&amp;lt;v; //vector 相当于 operator&amp;lt;&amp;lt; 的参数&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;reference-to-const做参数对常量支持的同时，也支持了非左值的类型 &lt;code&gt;cout&amp;lt;&amp;lt;v+v&lt;/code&gt;。 为了支持 &lt;code&gt;cout&amp;lt;&amp;lt;v&amp;lt;&amp;lt;v&lt;/code&gt; ，需要返回 ostream 的引用，除了效率的原因，还因为 ostream 不提供复制构造函数。&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;__&quot;&gt;数组索引操作符 &lt;code&gt;operator[]&lt;/code&gt; 重载&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt;operator[]&lt;/code&gt; 提供以下两种重载形式：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;reference operator[] (size_type n);
+const_reference operator[] (size_type n) const;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第一种形式可以通过索引对数组元素进行修改，第二种是通过返回的常量引用可以获取数组的内部元素。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;template &amp;lt;typename T,int row,int col&amp;gt;
+class Array2d {
+  class Array1d{ //nested class
+    public:
+        const T &amp;amp;operator[](int i) const{	//overload operator[]
+            return    array[i];   
+        }
+        T &amp;amp;operator[](int i){	//overload operator[]
+            return    array[i];   
+        }
+    private:
+        T array[col];             
+  };
+  public:
+    const Array1d &amp;amp;operator[](int i) const{	//overload operator[]
+        return    array[i];   
+    }
+    Array1d &amp;amp;operator[](int i){	//overload operator[]
+        return    array[i];   
+    }
+  private:
+    Array1d    array[row];     
+};
+
+Array2d &amp;lt;int , 3, 7&amp;gt; array;
+array[2][2]=2;
+std::cout&amp;lt;&amp;lt;array[2][2]&amp;lt;&amp;lt;std::endl; //print 2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在上面的代码中，以 nested class 的方法，并且对 &lt;code&gt;operator[]&lt;/code&gt; 进行重载，实现对二维数组中的元素可以用&lt;code&gt;array[][]&lt;/code&gt; 方式进行访问。&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;dereferencing_operators&quot;&gt;智能指针中Dereferencing Operators&lt;/h5&gt;
+
+&lt;p&gt;在智能指针的设计中需要对其内部的 raw pointer 进行解引，智能指针的使用更像指针，主要涉及到 &lt;code&gt;operator*&lt;/code&gt; 和 &lt;code&gt;operator-&amp;gt;&lt;/code&gt; 两个操作符。 这两个操作符重载的形式如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;T&amp;amp; operator*() const;
+T* operator-&amp;gt;() const;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在第一个重载中，返回 reference 的主要原因是为了保证多态性。，以 pass-value 返回可能会引起切割。 而且这两个重载在类内被 const 限制，主要是防止 raw pointer 被修改。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;template&amp;lt;typename T&amp;gt;
+class PTR{
+  public:
+    PTR(T *p):ptr(p){}
+    T &amp;amp;operator*() const{
+        return *ptr;
+    }
+    T *operator-&amp;gt;()const{
+        return ptr;
+    }
+  private:
+    T *ptr;      //raw pointer
+};
+
+PTR&amp;lt;std::string&amp;gt; str(new string(&amp;quot;i'm here&amp;quot;));
+std::cout&amp;lt;&amp;lt;&amp;quot;length &amp;quot;&amp;lt;&amp;lt;(*str).size()&amp;lt;&amp;lt;std::endl;	//print length 8
+std::cout&amp;lt;&amp;lt;&amp;quot;length &amp;quot;&amp;lt;&amp;lt;str-&amp;gt;size()&amp;lt;&amp;lt;std::endl;	//print length 8&lt;/code&gt;&lt;/pre&gt;</description>
+                <link>blog.yege.me/cpp/2014/04/02/c-plus-plus-overload-operators</link>
+                <guid>blog.yege.me/cpp/2014/04/02/c-plus-plus-overload-operators</guid>
+                <pubDate>2014-04-02T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的变量存储</title>
+                <description>&lt;p&gt;与变量存储相关的描述：作用域、存储持续性和链接性。与存储相关的说明符有：&lt;code&gt;auto&lt;/code&gt;、&lt;code&gt;register&lt;/code&gt;、&lt;code&gt;static&lt;/code&gt;、&lt;code&gt;extern&lt;/code&gt;、&lt;code&gt;mutable&lt;/code&gt;以及cv限定符： &lt;code&gt;const&lt;/code&gt; 和 &lt;code&gt;volatile&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;作用域&lt;/strong&gt;描述了名称在文件(翻译单元)中的可见范围。定义在函数内部的变量只能在该函数中使用；在文件中的函数定义之前定义的变量则可在所有函数中使用。作用域强调的是在文件中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;链接性&lt;/strong&gt;描述了名称在不同单元之间的共享。链接性为外部的名称可在文件间共享；链接性为内部的名称只能由一个文件中的函数共享。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;存储持续性&lt;/strong&gt;描述了数据在内存中存在的时间，其中包括三种：自动存储持续性、静态存储持续性、动态存储持续性。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;auto&lt;/code&gt;声明自动变量。&lt;/strong&gt;在函数内声明的形参和变量，当执行完函数或代码块时，它们使用的内存被自动释放，被称为自动变量。auto只能用于默认状态为自动的变量，因此几乎不使用它。auto声明的变量被存储于内存堆栈中。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;register&lt;/code&gt;声明寄存器变量。&lt;/strong&gt;寄存器变量也是一种自动变量，register关键字提醒编译器，希望使用CPU寄存器来存储变量，但是编译器不一定满足这个请求。存储在寄存器上的变量没有内存地址，因此不能将地址操作符用于寄存器变量，即使声明的寄存器变量最终被存储在内存上。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;static&lt;/code&gt;声明静态变量。&lt;/strong&gt;静态变量在程序的运行期间都存在，在函数外部定义的变量和使用static 的变量都是静态变量。未被初始化的静态变量所有位都被置零。 在函数外部定义的变量是外部变量，因为链接性为外部。当static用在函数外部定义的变量时，会改变变量的链接性，使链接性变为内部。 在函数内部定义使用static关键字的变量被称为静态局部变量，在该代码块不处于活动状态时仍然存在，程序只在启动时对它进行一次初始化。 函数默认的链接性为外部，因此只有一个文件包含该函数定义，但使用该函数的每个文件都应包含其函数原型。关键字static将函数的链接性改为内部。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;extern&lt;/code&gt;声明引用其他位置的变量。&lt;/strong&gt;外部变量有且只有一个文件包含了该变量的外部定义，其他文件要使用该变量，必须在声明中使用关键字extern。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;mutable&lt;/code&gt;限定类数据成员的可变性。&lt;/strong&gt;当类的成员函数被const限定，意味着不能对类的数据修改。但是当类的数据成员被mutable限定，则允许了const限定的成员函数对其修改。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;const&lt;/code&gt;声明符号常量。&lt;/strong&gt;在函数外部定义的变量，被const限定时，则链接性变为内部，与static类似。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;volatile&lt;/code&gt; 声明变量的易变性。&lt;/strong&gt;变量在内存单元存储的数据未被程序修改，它的值也可能会发生变化时，要用volatile限定。这种情况发生在程序间进行交互或数据共享时，要对内存进行数据读写控制。volatile 告诉编译器，每次使用变量时都要去内存取数据。因为默认情况下，编译器存在着优化：如果将变量缓存到寄存器中，就不会到内存取值，导致取值不是最新数据。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/03/28/c-plus-plus-variable-store</link>
+                <guid>blog.yege.me/cpp/2014/03/28/c-plus-plus-variable-store</guid>
+                <pubDate>2014-03-28T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的const限定符</title>
+                <description>&lt;p&gt;使用const声明符号常量，要在声明的同时进行初始化。常量被初始化后，其值就固定了，编译器不允许再修改它。 如果常量在声明时没有初始化，它的值是不确定的，而在此之后又不能修改常量，所以常量将无法正常使用。&lt;/p&gt;
+
+&lt;p&gt;const可以取代#define 的一部分功能（内联函数也能取代#define的一些功能），const比#define优越的地方在于： const能指定类型；const可以使用作用域规则；const可以用于复杂的类型。&lt;/p&gt;
+
+&lt;p&gt;const在函数中的应用&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;const 限定参数，禁止在函数中修改参数。&lt;/li&gt;
+
+&lt;li&gt;const 限定返回值，主要用于引用。&lt;/li&gt;
+
+&lt;li&gt;const 限定类成员函数，禁止成员函数改变类中的数据成员。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;定义学生类：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class student{
+  private:
+	std::string name; //姓名
+	int age;        //年龄
+  public:
+	student(){//默认构造函数
+	  name=&amp;quot;null&amp;quot;;
+	  age=-1;
+	}
+	const std::string &amp;amp;get_name() const{//获取姓名
+	  return name;
+	}
+	const int get_age() const{//获取年龄
+	  return age;      
+	}
+	void set_name(const std::string _name){//设置姓名
+	  name=_name;
+	}
+	void set_age(const int _age){//设置年龄
+	  age=_age;
+	}
+     //友元函数 输出打印学生姓名和年龄
+	friend  std::ostream &amp;amp;operator&amp;lt;&amp;lt;(std::ostream &amp;amp;os,const student &amp;amp;stu);
+};
+
+std::ostream &amp;amp;operator&amp;lt;&amp;lt;(std::ostream &amp;amp;os,const student &amp;amp;stu){
+   std::cout&amp;lt;&amp;lt;&amp;quot;name: &amp;quot;&amp;lt;&amp;lt;stu.name&amp;lt;&amp;lt;&amp;quot; &amp;quot;&amp;lt;&amp;lt;&amp;quot;age: &amp;quot;&amp;lt;&amp;lt;stu.age;
+   return os;
+}
+
+int main(){
+
+    student jim,tom;
+    jim.set_name(&amp;quot;Jim Green&amp;quot;);
+    jim.set_age(12);
+    tom.set_name(&amp;quot;Tom Hanks&amp;quot;);
+    tom.set_age(12);
+    std::cout&amp;lt;&amp;lt;jim&amp;lt;&amp;lt;&amp;quot;\n&amp;quot;&amp;lt;&amp;lt;tom&amp;lt;&amp;lt;std::endl;
+
+    const std::string &amp;amp;jim_name=jim.get_name();
+    std::string jim_name1=jim.get_name();
+    int jim_age=jim.get_age();
+    std::cout&amp;lt;&amp;lt;jim_name&amp;lt;&amp;lt;std::endl;
+
+    const student jim_cst=jim;
+    //jim_cst.set_name(&amp;quot;jim_cst&amp;quot;);
+    jim_cst.get_age();
+    return 0;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;1.成员函数 &lt;code&gt;void set_name(const std::string _name)&lt;/code&gt; 中参数 &lt;em&gt;name被const限制，表明&lt;/em&gt;name 在函数中不能被修改，任何改变_name值的行为都被禁止。 例如 在函数中t添加代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	_name=&amp;quot;A String&amp;quot;;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将报错。&lt;/p&gt;
+
+&lt;p&gt;2.&lt;code&gt;const std::string &amp;amp;get_name() const&lt;/code&gt; 中的第一个const限定返回值是不能被修改的，所以返回值也只能赋值给const限定的常量，这样才能保证不被修改。代码中&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const std::string &amp;amp;jim_name=jim.get_name();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中jim_name需要用const限定，否则会报错。这是因为，返回值为const引用，如果返回值传递给引用，则能够修改返回的对象。也就是说修改了 jim_name的值，jim中的name值会被改变。而const引用返回值是禁止这种修改的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;std::string jim_name1=jim.get_name();
+int jim_age=jim.get_age();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里只是调用了拷贝构造函数，即使修改了jim_name1也不会影响到jim中的name。&lt;/p&gt;
+
+&lt;p&gt;3.&lt;code&gt;const std::string &amp;amp;get_name() const&lt;/code&gt; 中的第二个const限制get_name()不能修改类的数据成员，无论是在函数的内部还是，还是通过返回引用在外部的外部，都禁止修改。 也就是对于这个函数来说，所有的数据成员变量看作常量，不能被修改。如果把这个函数定义为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;std::string &amp;amp;get_name() const{
+   return name;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这将导致错误，因为通过传递引用的方式可以对name进行修改，而后面的const是禁止修改。所以编译器将不会通过这种定义的。&lt;/p&gt;
+
+&lt;p&gt;4.const对类的成员函数进行约束，禁止了成员函数对成员变量的修改，但是类的const对象可以调用这些函数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const student jim_cst=jim;
+//jim_cst.set_name(&amp;quot;jim_cst&amp;quot;);
+jim_cst.get_age();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;5.应尽可能使用const。可以保护数据不被修改。而在引用类型的函数参数中使用const 能够打破对参数的左值的要求。&lt;/p&gt;
+
+&lt;p&gt;其他：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;去除const 限制使用强制类型转换 &lt;code&gt;const_cast&amp;lt; type &amp;gt;(expression)&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void set_default(student  &amp;amp;stu){
+    stu.set_name(&amp;quot;null&amp;quot;);
+    stu.set_age(-1);
+}
+set_default(const_cast&amp;lt;student &amp;amp;&amp;gt;(jim_cst));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;jim_cst中的内容将被改变。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;使用mutable 修饰的类成员变量，可以被const限定的成员函数修改。例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mutable string name;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不使用mutable 也可以通过对 this 进行类型转换，去除常量性，从而进行修改。例如： 为student类加入成员函数void set_default() const：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void student::set_default() const{
+    student * const fake_this=const_cast&amp;lt;student *const&amp;gt;(this);
+    fake_this-&amp;gt;name=&amp;quot;null&amp;quot;;
+    fake_this-&amp;gt;age=-1;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;因此可以推测const 对类成员函数的限制，实质是在这个函数作用域内对this指针所指向的对象（也就是对象自身）进行const限制（pointer -to- const）。 而在代码中的fake_this 则是个pointer-to-non-const。另外 this应该也被限制（可能是常量），不能指向其他的地址。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+                <link>blog.yege.me/cpp/2014/03/28/c-plus-plus-const-qualifier</link>
+                <guid>blog.yege.me/cpp/2014/03/28/c-plus-plus-const-qualifier</guid>
+                <pubDate>2014-03-28T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中类的隐式成员函数</title>
+                <description>&lt;p&gt;C++ 为类提供了以下几种隐式成员函数：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;默认构造函数&lt;/li&gt;
+
+&lt;li&gt;复制构造函数&lt;/li&gt;
+
+&lt;li&gt;赋值操作符 (operator=)&lt;/li&gt;
+
+&lt;li&gt;默认析构函数&lt;/li&gt;
+
+&lt;li&gt;地址操作符 如果类中没有设计这些成员函数，则编译器将隐式自动生成这些成员函数。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;1_&quot;&gt;1. 默认构造函数&lt;/h5&gt;
+
+&lt;p&gt;C++在创建类的对象时都要调用构造函数，如果在类中没有提供任何构造函数，C++将隐式创建一个默认构造函数。 在类中一旦定义了构造函数，编译器将不再提供隐式生成的默认构造函数，如果还要使用默认构造函数的话，就要显式定义将默认构造函数。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Cat{
+  private:
+    char name[20];   
+  public:
+    void show_name(){std::cout&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;}
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在Cat类中没有定义构造函数，所以编译器将提够一个默认构造函数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat::Cat(){}  //implicit default constructor&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用默认构造函数可以这样定义对象：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//invokes default constructor
+Cat blueCat;
+Cat redCat();&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果在类中显示定义一个构造函数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Cat{
+  private:
+    char name[20];   
+  public:
+    //Cat::Cat(){};
+    Cat(const char *str){strcpy(name,str);}; //constructor Cat(const char *)
+    void show_name(){std::cout&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;};
+};
+
+Cat blueCat(&amp;quot;blueCat&amp;quot;); //invokes  Cat(const char *)
+blueCat.show_name();  //print  blueCat
+Cat redCat;       //error can not invokes default constructor&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;C++编译器提供的默认构造函数，在创建对象时不能完成成员变量的初始化，因此要根据需求显式定义构造函数。&lt;/p&gt;
+
+&lt;h5 id=&quot;2_&quot;&gt;2. 复制构造函数&lt;/h5&gt;
+
+&lt;p&gt;复制构造函数用于一个对象初始化另一个对象时。如果没有定义复制构造函数，编译器提供默认的复制构造函数。 默认复制构造函数的功能是，逐个将非静态成员变量的值复制到新对象的成员变量，是一种浅复制。复制构造函数原型如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class_name(const Class_name &amp;amp;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当创建一个新对象，并将新对象显式的初始化为现有对象，调用复制构造函数。无论构造函数还是复制构造函数只是在创建对象时调用。 Cat 类的默认复制构造函数为&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat(const Cat &amp;amp;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以下语句都将调用复制构造函数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat aCat(blueCat);    
+Cat myCat=blueCat;
+Cat theCat=Cat(blueCat);
+Cat *pCat=new Cat(blueCat);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;当程序生成对象副本时，编译器都将使用复制构造函数，即 当函数按值传递对象或函数返回对象时，都将使用复制构造函数。复制构造函数原型中 Class_name(const Class_name &amp;amp;); 之所以传递的是引用而不是对象，就是因为在传递对象的时候会调用复制构造函数，最终会造成无限循环调用。&lt;/p&gt;
+
+&lt;p&gt;当类中的包含了使用new初始化的指针成员变量时，应该定义一个复制构造函数，以复制指针指向的数据，而不是指针，这被称为深复制。 默认的复制构造函数是浅复制，浅复制只复制指针信息，而不复制指针引用的结构。重写 Cat类：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Cat{
+  private:
+    char *name;   // pointer
+  public:
+    Cat(const char *str){name=new char[20]; strcpy(name,str);};
+    // Cat(const Cat &amp;amp;cat){name=new char[20];strcpy(name,cat.name); };
+    void show_name(){std::cout&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;}
+    void set_name(const char *str){strcpy(name,str);}
+    ~Cat(){delete [] name;}; //deconstructor
+};
+
+Cat blueCat(&amp;quot;blueCat&amp;quot;);
+blueCat.show_name();	//print  blueCat
+Cat theCat=Cat(blueCat);	//copy constructor
+theCat.show_name();	// print blueCat
+theCat.set_name(&amp;quot;theCat&amp;quot;);
+blueCat.show_name(); 	// print theCat     #1
+theCat.show_name();	// print theCat     #2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;默认复制构造函数使 blueCat和theCat 的name 指向相同的地址，导致修改其中一个的name 指向的内容，另一个也会修改。对一个对象的操作会对另一个对象产生影响。 定义复制构造函数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat(const Cat &amp;amp;cat){
+    name=new char[20];
+    strcpy(name,cat.name);
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最后两句代码#1 #2输出结果将不一样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;blueCat.show_name(); 	// print blueCat    #1
+theCat.show_name();	// print theCat		#2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义复制构造函数的原因在于，一些类成员是使用new初始化的、指向数据的指针，而不是数据本身。 默认的拷贝构造函数是浅复制，只是将各个成员变量的值进行简单的赋值；当成员变量是指针时，只是复制了其地址而没有开辟新的存储空间，这时就需要自定义拷贝构造函数，进行深复制。&lt;/p&gt;
+
+&lt;h5 id=&quot;3_&quot;&gt;3. 赋值操作符&lt;/h5&gt;
+
+&lt;p&gt;将已有的对象赋给另一个对象时自动为类重载赋值操作符。赋值操作符的隐式实现也是对成员的逐个复制,当类中的包含了使用new初始化的指针成员变量时，也要对其显示定义。 赋值操作符的原型为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Class_name &amp;amp;Class_name::operator=(const Class_name &amp;amp;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意事项：&lt;/p&gt;
+
+&lt;p&gt;分配数据之前要对以前分配的数据释放，因为有些对象在赋值之前可能已经分配了数据，这就要在分配数据之前将其释放。 避免将对象赋给自身，因为赋值之前的释放内存会破坏数据。 函数返回指向自身的引用，可以用于连续赋值。&lt;/p&gt;
+
+&lt;p&gt;对Cat类定义赋值操作符：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat &amp;amp;Cat::operator=(const Cat &amp;amp;cat){
+    f(this==&amp;amp;cat)return *this;
+    delete [] name;
+    name=new char[20];
+    strcpy(name,cat.name);
+    return *this;
+}
+
+Cat blueCat(&amp;quot;blueCat&amp;quot;);
+Cat aCat(blueCat);
+aCat.show_name(); // print blueCat
+aCat=greenCat;
+aCat.show_name(); //print greenCat
+blueCat.show_name();//print blueCat&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;4_&quot;&gt;4. 析构函数&lt;/h5&gt;
+
+&lt;p&gt;定义析构函数，主要是因为在对象销毁时要完成一些操作。例如 Cat 类的对象销毁时，要对name 释放空间。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;~Cat(){delete [] name;}; //deconstructor&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在函数多态继承时，要虚拟析构函数。如果不虚拟析构函数，则只调用对应于指针类型的析构函数。(多态机制)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Cat{
+  private:
+    char *name;   
+  public:
+    Cat(const char *str){name=new char[20]; strcpy(name,str);};
+    Cat(const Cat &amp;amp;cat){name=new char[20];strcpy(name,cat.name); };
+    void show_name(){std::cout&amp;lt;&amp;lt;name&amp;lt;&amp;lt;std::endl;}
+    void set_name(const char *str){strcpy(name,str);}
+    Cat &amp;amp;operator=(const Cat &amp;amp;);
+    virtual ~Cat(){delete [] name;std::cout&amp;lt;&amp;lt;&amp;quot;Cat Deconstructor \n&amp;quot;;};
+};
+
+Cat &amp;amp;Cat::operator=(const Cat &amp;amp;cat){
+    if(this==&amp;amp;cat)return *this;
+    delete [] name;
+    name=new char[20];
+    strcpy(name,cat.name);
+    return *this;
+}
+
+class BigCat:public Cat{
+  public:
+    BigCat(const char * str):Cat(str){};
+    ~BigCat(){std::cout&amp;lt;&amp;lt;&amp;quot;BigCat Deconstructor \n&amp;quot;;};
+};
+
+Cat *bigCat=new BigCat(&amp;quot;bigCat&amp;quot;);
+bigCat-&amp;gt;show_name();
+delete bigCat;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;输出：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;BigCat Deconstructor
+Cat Deconstructor&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果将去除 Cat 中的析构函数虚拟化，则只输出：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cat Deconstructor&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;5_&quot;&gt;5. 关于复制构造函数和赋值操作符原型&lt;/h5&gt;
+
+&lt;p&gt;对于复制构造的原型Class_name(const Class_name &amp;amp;);传递的是reference-to-const参数，也就是说不对要复制源进行修改。 但是也有例外情况如智能指针auto_ptr的复制构造函数传递的就是reference-to-non-const，这是为了能够修改复制源进行所有权转移。同理赋值操作符原型。&lt;/p&gt;
+
+&lt;h5 id=&quot;6_&quot;&gt;6. 关于禁止使用这些成员函数&lt;/h5&gt;
+
+&lt;p&gt;禁止使用这些成员函数可以用private或protected进行限定。&lt;/p&gt;
+
+&lt;p&gt;将所有构造函数包括复制构造函数都加入private限定，会导致该类不能被继承。&lt;/p&gt;
+
+&lt;p&gt;将析构函数加上private限定也会导致该类不能被继承。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/03/26/c-plus-plus-implicit-memeber-function-in-class</link>
+                <guid>blog.yege.me/cpp/2014/03/26/c-plus-plus-implicit-memeber-function-in-class</guid>
+                <pubDate>2014-03-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的函数返回值</title>
+                <description>&lt;h5 id=&quot;1_referencetoconst&quot;&gt;1. 函数返回reference-to-const引用&lt;/h5&gt;
+
+&lt;p&gt;使用reference-to-const 返回值是为了提高效率并且保证安全不被切割，但是不能把函数内部的局部变量作为返回值，因为局部变量在函数执行结束后会被释放，导致返回引用指向的对象将不会存在。 const作为限定符防止通过引用对其指向的对象进行修改。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  private:
+    loat x;
+    float y;
+  public:
+    vector(float x,float y):x(x),y(y){};//构造函数
+    friend const vector &amp;amp;max_mod(const vector &amp;amp;,const vector &amp;amp;);//取模的最大
+};
+
+const vector &amp;amp;max_mod(const vector &amp;amp;v1,const vector &amp;amp;v2){
+    float d1=(v1.x)*(v1.x)+(v1.y)*(v1.y);
+    float d2=(v2.x)*(v2.x)+(v2.y)*(v2.y);
+    if (d1&amp;gt;d2) return v1;
+    return v2;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用对象接收函数返回的引用，将调用对象的operator= (赋值操作符)将引用所指向的对象赋值给外面的对象。例如max_mod函数将返回的值赋值给v3。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector v3
+v3=max_mod(v2,v1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用 reference-to-non-const 引用来接收 reference-to-const 返回值是被禁止的，编译器会报错。下面的代码是错误的，const限制符不允许修改指向的对象，而v4 是 reference-to-non-const 能够改变所指向的对象。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector &amp;amp;v4=max_mod(v2,v1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用reference-to-const 接收函数的reference-to-non-const 是可以的。v4与max_mod函数返回对象(v1或v2)的地址是一致的。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;const vector &amp;amp;v4=max_mod(v2,v1);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;2_referencetononconst&quot;&gt;2. 函数返回reference-to-non-const引用&lt;/h5&gt;
+
+&lt;p&gt;返回指向非const对象的引用主要有两个目的，第一是为了提高效率，non-const允许通过引用的方式对指向的对象进行修改。第二是只能返回引用，不能返回对象，因为返回对象需要调用复制构造函数，当复制构造函数禁止被调用时，就不能以对象的方式返回，只能返回引用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  ..............................
+  public:
+    vector(float x,float y):x(x),y(y){};//构造函数
+    vector &amp;amp;operator=(const vector &amp;amp;);//引用作为参数提高效率
+    friend std::ostream &amp;amp; operator&amp;lt;&amp;lt;(std::ostream &amp;amp;os,const vector &amp;amp; v );//ostream 没有公有的复制构造函数
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;3_&quot;&gt;3. 返回对象&lt;/h5&gt;
+
+&lt;p&gt;如果返回的是函数中的局部变量，则应该以对象的方式返回。在函数返回对象时，返回语句会隐式调用复制构造函数来创建一个调用程序能够访问的对象(临时对象)。这也是为什么返回对象效率低的原因，而现代编译器已经对返回值进行优化(RVO)，在一定程度上提高了效率。 例如 对vector类的operator+进行重载:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  ...............................
+  public:
+    vector operator+(const vector &amp;amp; v);
+};
+
+vector vector::operator+(const vector &amp;amp;v){
+    return vector(this-&amp;gt;x+v.x,this-&amp;gt;y+v.y);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;4_const&quot;&gt;4. 返回const对象&lt;/h5&gt;
+
+&lt;p&gt;const限制对象的返回，会防止某些错误行为发生。在上面的例子中对operator+的重载会允许下面的代码发生：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if(v1+v2=v3){}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而我们想要的代码可能是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if(v1+v2==v3){}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了禁止这种行为，可以返回const对象，对operator+重载如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class vector{
+  ...............................
+  public:
+    const vector operator+(const vector &amp;amp; v);
+};
+
+const vector vector::operator+(const vector &amp;amp;v){
+    return vector(this-&amp;gt;x+v.x,this-&amp;gt;y+v.y);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;5_rvo&quot;&gt;5. 函数返回值优化(RVO)&lt;/h5&gt;
+
+&lt;p&gt;函数以by-value方式返回对象时，会产生临时对象。临时对象的产生与销毁都需要代价。 这个临时对象是不可见的，不会在源代码中出现，它的作用是接收函数的返回值(只要产生了一个non-heap object而没有为它命名，于是便诞生了一个临时对象)。 &lt;br /&gt;例如，对于上面重载的operator+，在没有返回值优化的情况下，编译器可以将其重写为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void vector_add(const vector &amp;amp; __result,const vector &amp;amp;v1,vector &amp;amp;v2){
+    struct  vector __tempObject;//匿名对象
+    __tempObject.vector::vector(this-&amp;gt;x+v.x,this-&amp;gt;y+v.y);//构造匿名变量
+    __result.vector::vector(__tempObject);//调用复制构造函数
+    __tempObject.vector::~vector();//销毁匿名变量
+    return;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对于语句：v3=v1+v2; 解释为以下伪代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct vector __tempResult; //暂存，此处没有构造函数，临时对象
+vector_add(__tempResult,v1,v2);//所有参数按引用传递
+v3=__tempResult;//将结果反馈到左边&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;临时对象 “__tempResult” 是为了接收函数的返回值。&lt;/p&gt;
+
+&lt;p&gt;当编译器提供返回值优化(ROV)时，伪代码如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void vector_add(const vector &amp;amp; __result,const vector &amp;amp;v1,vector &amp;amp;v2){
+    __result.vector::vector(this-&amp;gt;x+v.x,this-&amp;gt;y+v.y);//创建__result
+    return;
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在RVO优化中，直接把要返回的对象构造在接收返回值的临时对象内，从而省去了函数内的局部变量的构造等操作。&lt;/p&gt;
+
+&lt;p&gt;返回值优化是编译器进行的优化。&lt;/p&gt;
+
+&lt;h5 id=&quot;6_covariance_of_return_type&quot;&gt;6. 返回类型协变(covariance of return type)&lt;/h5&gt;
+
+&lt;p&gt;在子类中重新定义父类的方法，应该确保与父类中的函数原型完全相同，如果返回类型为父类的指针或引用，则可以修改为指向子类的指针或引用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class base{
+  public:
+    virtual base &amp;amp;test(){
+	    //code
+	}
+};
+
+class driver:public base{
+  public:
+    virtual driver &amp;amp;test(){
+	    //code
+	}
+};&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;7_&quot;&gt;7. 返回对象与返回引用的使用原则&lt;/h5&gt;
+
+&lt;p&gt;能返回引用的时候尽量返回引用，因为引用的效率高，而且安全。例如在智能指针的解引时对operator * 的重载返回的就是引用，如果返回对象会有切割的问题存在。&lt;/p&gt;
+
+&lt;p&gt;当函数要返回的是函数生成的局部变量而且这个变量是对象，这时就不要试图返回引用。&lt;/p&gt;
+
+&lt;h5 id=&quot;8_passbyvaluepassbyreference&quot;&gt;8. pass-by-value与pass-by-reference传参方式&lt;/h5&gt;
+
+&lt;p&gt;pass-by-value与pass-by-reference-to-const两种传参方式的共同点是，都不会对外面的实参更改。&lt;/p&gt;
+
+&lt;p&gt;pass-by-reference就像返回引用时的众多优点，pass-by-reference传参方式也具备这些优点：效率高，避免切割，在对象没有拷贝构造函数会拷贝构造函数有限制的时候只能用pass-by-reference传参方式(例如 传递 auto_ptr,只能用传递引用)。&lt;/p&gt;
+
+&lt;p&gt;但是pass-by-reference并不适用于传递内置对象，或者是STL迭代器和容器，这是要用pass-by-value方式。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/03/26/c-plus-plus-function-return-value</link>
+                <guid>blog.yege.me/cpp/2014/03/26/c-plus-plus-function-return-value</guid>
+                <pubDate>2014-03-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>C++中的引用</title>
+                <description>&lt;p&gt;引用是已经定义的变量的别名，主要用于函数的参数传递和函数的返回值等。&lt;/p&gt;
+
+&lt;h4 id=&quot;&quot;&gt;引用的注意事项&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;引用必须在声明的时候进行初始化，不存在空引用。&lt;/li&gt;
+
+&lt;li&gt;初始化之后就不能改变引用关系。&lt;/li&gt;
+
+&lt;li&gt;对引用的任何操作都是在对变量本身进行的操作，与指针类似，但形式更自然。&lt;/li&gt;
+
+&lt;li&gt;引用更接近 const pointer 指针，因为 const 限制的变量只能在创建时初始化，且在变量初始化后不能再更改。&lt;/li&gt;
+
+&lt;li&gt;引用非常适合结构和类，而不是基本的内置类型。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;_2&quot;&gt;引用与指针的区别&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;引用形式更自然，在实现某些操作符(例如赋值)时要用引用，会方便理解与使用。例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vector&amp;lt;int&amp;gt; v[10];
+v[1]=9;  //赋值操作符用引用
+//如果赋值操作符使用指针则
+*v[1]=9; //赋值操作符用指针&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;引用没有空引用，指针有空指针。因此在使用指针的时候就要测试指针是否有效，而引用不需要测试。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;初始化之后，引用不能更改引用关系，而指针可以改变其指向的对象。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;数组做函数的参数时，只能用指针，而不能用引用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;_3&quot;&gt;引用在函数中的应用&lt;/h4&gt;
+
+&lt;p&gt;引用在函数中可以做函数的参数，也可做返回值的类型。使用引用的原因有一下几种情况：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;传递非内置数据类型时，使用引用效率高&lt;/li&gt;
+
+&lt;li&gt;对虚函数多态进行支持&lt;/li&gt;
+
+&lt;li&gt;拷贝构造函数不能用的时候，要考虑引用传值&lt;/li&gt;
+
+&lt;li&gt;在一些情况时，避免传递对象被切割，使用引用传值&lt;/li&gt;
+
+&lt;li&gt;基于以上几种原因，通常情况下：拷贝构造函数必须使用引用做参数；赋值操作符返回的是引用；输入输出操作符返回的是引用；异常捕获中catch的参数为引用； 智能指针auto_ptr做函数参数时用引用；智能指针对操作符-&amp;gt;解引时返回值为引用。&lt;/li&gt;
+
+&lt;li&gt;当数组做参数时，内置数据类型做参数时，STL 迭代器做参数时，不能或不建议用引用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;1_&quot;&gt;1. 引用做为函数参数&lt;/h5&gt;
+
+&lt;h5 id=&quot;1_byvalue__byreference_&quot;&gt;(1) by-value 和 by-reference 区别&lt;/h5&gt;
+
+&lt;p&gt;函数传递参数的方式有： &lt;code&gt; by-value &lt;/code&gt; 和 &lt;code&gt; by-reference &lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;by-value&lt;/code&gt;按值传递参数要对数据进行拷贝，将实参的数据拷贝到函数中，在函数中是对实参的拷贝进行操作，因此不影响实参本身。 当参数的数据量较大时，这种拷贝势必要占用更大的存储空间，因此增加了函数的开销。 为了解决这一问题，可以传递指针，通过访问地址的形式减小开销。在C语言中只有按值传递一种方式，传递指针也是按值传递的一种，只不过拷贝的数据是地址，从而减小了数据量。 在C++中可以传递引用的方式。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;by-reference&lt;/code&gt;引用作为函数的参数，使得函数的变量成为调用程序中的变量的别名，这种传递参数的方法称为引用传递。 在函数中，对实参引用进行的操作，就是对实参本身进行操作，会影响实参本身。以 &lt;code&gt;by-reference&lt;/code&gt; 传参的两个重要原因是 其一，不需要拷贝，效率高；另外，对虚函数多态提供支持。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义一个函数:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//不推荐内置数据类型 by-reference 方式传参
+void swap(int &amp;amp;x,int &amp;amp;y){
+	int temp=x;
+	x=y;
+	y=temp;
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;调用这个函数:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int a=1,b=2;
+swap(a,b);//call function swap(int &amp;amp;,int &amp;amp;)
+std::cout&amp;lt;&amp;lt;a&amp;lt;&amp;lt;&amp;quot; &amp;quot;&amp;lt;&amp;lt;b&amp;lt;&amp;lt;std::endl;// print 2 1&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以 &lt;code&gt;by-value&lt;/code&gt; 和 &lt;code&gt;by-reference&lt;/code&gt; 两种方式传值的函数，在调用函数的形式上看起来是相同的，只能通过函数原型或函数定义进行区别。 引用传递和按值传递在函数重载时，被视为同一种特征标。&lt;/p&gt;
+
+&lt;h5 id=&quot;2_byreferencetoconst__byreferencetononconst_&quot;&gt;(2) by-reference-to-const 与 by-reference-to-non-const 区别&lt;/h5&gt;
+
+&lt;p&gt;&lt;code&gt; by-reference-to-non-const &lt;/code&gt;允许函数在内部对传递的实参进行修改操作，传递的实参不能为 reference-to-const。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt; by-reference-to-const &lt;/code&gt;不允许在函数内部对传递的实参进行修改操作，因此在很多时候可以取代 &lt;code&gt;by-value&lt;/code&gt; 传值方式来提高效率，传递的实参可以为 reference-to-non-const 。 当实参与形参类型不匹配时，C++会进行类型转换来生成相匹配的临时变量，将临时变量作为实参传递；而在 &lt;code&gt;by-reference-to-non-const&lt;/code&gt;的函数中是要求对实参本身进行操作， 为了消除这种矛盾，C++在 &lt;code&gt;by-reference-to-non-const&lt;/code&gt; 传递中禁止创建临时变量。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在上例中如果这样调用函数将报错：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;double a=1,b=2;
+swap(a,b);//call function swap(int &amp;amp;,int &amp;amp;) :invalid initialization of non-const reference of type 'int&amp;amp;' from a temporary of type 'int'&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;使用 &lt;code&gt;by-reference-to-const&lt;/code&gt; 传递引用不存在这个问题，因为 const 限定了在函数中不能修改变量，即使传递的是临时变量也无妨。生成临时变量的情况包括两种:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;实参的类型正确但不是左值&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;swap(1,2);
+swap(a,a+b);//a,b为int型&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;实参的类型不正确,但是可以转换为正确的类型.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对于 &lt;code&gt;by-reference-to-const&lt;/code&gt; 传递引用的函数，如果实参不匹配，则其行为类似于按值传递，为确保原始数据不被修改，将使用临时变量来存储值。 如果函数调用的参数不是左值或与相应的const引用类型不匹配，C++会建立正确类型的匿名变量，将函数调用的参数的值传递给该匿名变量，并让参数来引用该变量。&lt;/p&gt;
+
+&lt;h5 id=&quot;2_&quot;&gt;2. 函数返回值为引用&lt;/h5&gt;
+
+&lt;h5 id=&quot;1__2&quot;&gt;(1) 返回函数内部生成变量的引用&lt;/h5&gt;
+
+&lt;p&gt;引用做函数的返回值时，要避免返回的是存储于栈的临时变量的引用，因为当函数执行结束时，临时变量会被释放，最终导致返回的引用不可用。 如果是存储在堆内的动态变量则可以返回它的引用。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义一个结构体&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct Rect{
+	float width;
+	float height;
+};
+//定义一个返回引用的函数
+struct Rect &amp;amp;get_rect(float w,float h){
+	struct Rect *r=new Rect();
+	r-&amp;gt;width=w;
+	r-&amp;gt;height=h;
+	std::cout&amp;lt;&amp;lt;r&amp;lt;&amp;lt;std::endl;//输出地址
+	return *r;
+}
+//调用这个函数
+struct Rect &amp;amp;r=get_rect(1,6);//声明引用并初始化
+std::cout&amp;lt;&amp;lt;&amp;amp;r&amp;lt;&amp;lt;std::endl;//输出地址&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行的结果是输出的地址相同&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;如果返回值赋值给变量，则会出现一些问题&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;struct Rect r=get_rect(1,6);
+struct Rect t;
+t=get_rect(1,6);&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在这个过程中，调用了拷贝构造函数，无论r和t都与返回的引用所指向的对象不是同一个，函数返回的引用仅用来做构造函数的参数，在函数外部无法取得这个引用，所以会导致无法 delete 返回的引用所指向的对象。 在函数返回引用时，引用不能指向临时变量。&lt;/p&gt;
+
+&lt;h5 id=&quot;2__byreference_&quot;&gt;(2) 返回 by-reference 传递的引用参数&lt;/h5&gt;
+
+&lt;p&gt;另一种返回引用的方式，不在函数内产生对象，而是通过参数传递这个这对象，最后以引用的方式返回。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;返回引用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;int &amp;amp;max(int &amp;amp;a,int &amp;amp;b){
+	return a&amp;gt;b?a:b;
+}
+int a=1,b=2;
+int c=max(a,b);//与返回普通变量无较大的区别
+int &amp;amp;d=max(a,b);//d指向数值大的那个变量b的地址，对d的操作就是对b操作&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;3_&quot;&gt;3. 函数中的引用与指针&lt;/h5&gt;
+
+&lt;p&gt;引用和指针除了做函数参数之外，还支持类的虚函数多态实现. 引用和指针作为函数参数，则可以修改变量本身的内容。如果禁止在函数中修改可以使用 const进行限制。 指针和引用做函数返回值时，应避免返回指向临时变量的指针或着引用。因为临时变量在函数运行结束后被释放。可以返回指向用new创建的指针或着引用，但是在使用结束之后，要对其释放内存(delete)。&lt;/p&gt;
+
+&lt;p&gt;在引用传递过程中，函数的形参也作为局部变量，在栈中开闭内存空间，但是这时存放的是实参变量的地址，对形参的任何操作都处理成间接寻址，即通过栈中存放的地址访问主调函数中的实参变量。&lt;/p&gt;</description>
+                <link>blog.yege.me/cpp/2014/03/25/c-plus-plus-reference</link>
+                <guid>blog.yege.me/cpp/2014/03/25/c-plus-plus-reference</guid>
+                <pubDate>2014-03-25T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>

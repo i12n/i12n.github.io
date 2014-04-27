@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta name="baidu-site-verification" content="pfxBYSccpl" />
+    <meta charset="utf-8">
+    <title>YeGe'Blog-C++中的虚基类</title>
+    <meta name="description" content="">
+    <meta name="author" content="YeGe Blog">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">BloGe</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">导航</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">标签</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h4>C++中的虚基类 </h4>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2014-04-17</span>
+    </div>
+    <div class="content">
+      <p>当类的继承中出现菱形继承关系时，会在最底层派生类中出现同一个基类的两个副本， 例如AB类对象中会保存两份Base对象。可以用虚基类的方式解决这个问题。所谓虚基类是指Base这个类， SubA和SubB两个子类可以以虚继承的方式来继承。而AB类以正常方式继承SubA和SubB类。</p>
+
+<p>虚基类改变了基类被初始化的方式。在非虚基类继承时， 子类只能在其构造函数初始化列表调用即时基类构造函数来完成即时基类的初始化(如果没有指定即时基类的构造函数，则调用默认构造函数完成初始化工作，即时基类是指最直接的基类)。 也就是说，AB只能调用SubA和SubB的构造函数，而不能越过中间类(SubA和SubB)调用Base的构造函数。 在这种情况下，只能通过传值给SubA和SubB的构造函数，进而由SubA和SubB来初始化Base。 在虚基类继承时改变了这个规则。 当基类是虚拟时，禁止将信息通过中间类自动传递给基类，而是允许初始化列表可以直接调用虚基类的构造函数(如果没有指定虚基类的构造函数，则调用默认构造函数完成初始化工作)。 也就是说，AB类初始化列表可以直接调用Base的构造函数，而AB类通过SubA和SubB传递的关于构造Base的信息将不起作用。</p>
+
+<p><img src="/assets/images/2014041702.png" alt="虚基类类图" /> <img src="/assets/images/2014041701.png" alt="虚基类内存布局" /></p>
+
+<p>虚基类的内存布局，会有一些特殊的地方。 首先为了支持虚基类，派生类的对象要额外存储一个指针，这个指针指向虚基类对象的地址或偏移地址。</p>
+
+<pre><code>class Base{
+  public:
+    Base(int i=0):i(i){};
+    int getBase(){return i;};
+  private:
+    int i; 
+};
+class SubA:virtual public Base{
+  public:
+    SubA(int i,int a):a(a),Base(i){ };
+    void showSubA(){
+        std::cout&lt;&lt;&quot;Base:&quot;&lt;&lt;getBase()&lt;&lt;&quot; SubA:&quot;&lt;&lt;a&lt;&lt;std::endl;
+    }
+  private:
+    int a;
+};
+class SubB:virtual public Base{
+  public:
+    SubB(int i,int b):b(b),Base(i){ };
+    void showSubB(){
+        std::cout&lt;&lt;&quot;Base:&quot;&lt;&lt;getBase()&lt;&lt;&quot; SubB:&quot;&lt;&lt;b&lt;&lt;std::endl;
+    };
+  private:
+    int b;
+};
+class AB: public SubA, public SubB{
+  public:
+    //use default Base constructor
+    AB(int a,int i1,int b,int i2,int ab):SubA(a,i1),SubB(b,i2),ab(ab){}; //#1
+    AB(int a,int b,int i):Base(i),SubA(a,a),SubB(b,b){};            //#2
+    void showAB(){
+        std::cout&lt;&lt;&quot;showAB&quot;&lt;&lt;std::endl;SubA::showSubA();SubB::showSubB();
+    };
+  private:
+    int ab;
+};</code></pre>
+
+<p>Code:</p>
+
+<pre><code> AB ab(1,2,3,4,5);     //#1
+ ab.showAB();</code></pre>
+
+<p>Result:</p>
+
+<pre><code>Base:0 SubA:2
+Base:0 SubA:4</code></pre>
+
+<p>Code:</p>
+
+<pre><code>AB ab(1,2,3);     //#2
+ab.showAB();</code></pre>
+
+<p>Result:</p>
+
+<pre><code>Base:3 SubA:1
+Base:3 SubA:2</code></pre>
+
+<p>虚继承要在继承时加关键字virtual 如代码所示:</p>
+
+<pre><code>class SubA:virtual public Base{………}</code></pre>
+
+<p>如果将不使用虚基类，则上面的代码会在#2处报编译错:</p>
+
+<pre><code>type `class Base' is not a direct base of `AB'</code></pre>
+
+<p>也就是说禁止AB的初始化列表中跨过中间类而用Base的构造函数。</p>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#cpp-ref">
+    		cpp <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+         <ul>
+     
+        <li class="next"><a href="/cpp/2014/04/21/c-plus-plus-data-members-layout" title="C++中数据成员的布局">&larr;上一篇 </a></li>
+      
+	  <li><a href="/archive.html">更多</a></li>
+	  
+        <li class="prev"><a href="/cpp/2014/04/15/c-plus-plus-implicit-conversions" title="C++中的隐式类型转换"> 下一篇&rarr;</a></li>
+      
+      </ul>
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 YeGe Blog
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

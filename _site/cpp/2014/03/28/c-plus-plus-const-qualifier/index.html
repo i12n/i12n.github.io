@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta name="baidu-site-verification" content="pfxBYSccpl" />
+    <meta charset="utf-8">
+    <title>YeGe'Blog-C++中的const限定符</title>
+    <meta name="description" content="">
+    <meta name="author" content="YeGe Blog">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">BloGe</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">关于</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">归档</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">分类</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">导航</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">标签</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h4>C++中的const限定符 </h4>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>2014-03-28</span>
+    </div>
+    <div class="content">
+      <p>使用const声明符号常量，要在声明的同时进行初始化。常量被初始化后，其值就固定了，编译器不允许再修改它。 如果常量在声明时没有初始化，它的值是不确定的，而在此之后又不能修改常量，所以常量将无法正常使用。</p>
+
+<p>const可以取代#define 的一部分功能（内联函数也能取代#define的一些功能），const比#define优越的地方在于： const能指定类型；const可以使用作用域规则；const可以用于复杂的类型。</p>
+
+<p>const在函数中的应用</p>
+
+<ol>
+<li>const 限定参数，禁止在函数中修改参数。</li>
+
+<li>const 限定返回值，主要用于引用。</li>
+
+<li>const 限定类成员函数，禁止成员函数改变类中的数据成员。</li>
+</ol>
+
+<p>定义学生类：</p>
+
+<pre><code>class student{
+  private:
+	std::string name; //姓名
+	int age;        //年龄
+  public:
+	student(){//默认构造函数
+	  name=&quot;null&quot;;
+	  age=-1;
+	}
+	const std::string &amp;get_name() const{//获取姓名
+	  return name;
+	}
+	const int get_age() const{//获取年龄
+	  return age;      
+	}
+	void set_name(const std::string _name){//设置姓名
+	  name=_name;
+	}
+	void set_age(const int _age){//设置年龄
+	  age=_age;
+	}
+     //友元函数 输出打印学生姓名和年龄
+	friend  std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os,const student &amp;stu);
+};
+
+std::ostream &amp;operator&lt;&lt;(std::ostream &amp;os,const student &amp;stu){
+   std::cout&lt;&lt;&quot;name: &quot;&lt;&lt;stu.name&lt;&lt;&quot; &quot;&lt;&lt;&quot;age: &quot;&lt;&lt;stu.age;
+   return os;
+}
+
+int main(){
+
+    student jim,tom;
+    jim.set_name(&quot;Jim Green&quot;);
+    jim.set_age(12);
+    tom.set_name(&quot;Tom Hanks&quot;);
+    tom.set_age(12);
+    std::cout&lt;&lt;jim&lt;&lt;&quot;\n&quot;&lt;&lt;tom&lt;&lt;std::endl;
+
+    const std::string &amp;jim_name=jim.get_name();
+    std::string jim_name1=jim.get_name();
+    int jim_age=jim.get_age();
+    std::cout&lt;&lt;jim_name&lt;&lt;std::endl;
+
+    const student jim_cst=jim;
+    //jim_cst.set_name(&quot;jim_cst&quot;);
+    jim_cst.get_age();
+    return 0;
+}</code></pre>
+
+<p>1.成员函数 <code>void set_name(const std::string _name)</code> 中参数 <em>name被const限制，表明</em>name 在函数中不能被修改，任何改变_name值的行为都被禁止。 例如 在函数中t添加代码：</p>
+
+<pre><code>	_name=&quot;A String&quot;;</code></pre>
+
+<p>将报错。</p>
+
+<p>2.<code>const std::string &amp;get_name() const</code> 中的第一个const限定返回值是不能被修改的，所以返回值也只能赋值给const限定的常量，这样才能保证不被修改。代码中</p>
+
+<pre><code>const std::string &amp;jim_name=jim.get_name();</code></pre>
+
+<p>其中jim_name需要用const限定，否则会报错。这是因为，返回值为const引用，如果返回值传递给引用，则能够修改返回的对象。也就是说修改了 jim_name的值，jim中的name值会被改变。而const引用返回值是禁止这种修改的。</p>
+
+<pre><code>std::string jim_name1=jim.get_name();
+int jim_age=jim.get_age();</code></pre>
+
+<p>这里只是调用了拷贝构造函数，即使修改了jim_name1也不会影响到jim中的name。</p>
+
+<p>3.<code>const std::string &amp;get_name() const</code> 中的第二个const限制get_name()不能修改类的数据成员，无论是在函数的内部还是，还是通过返回引用在外部的外部，都禁止修改。 也就是对于这个函数来说，所有的数据成员变量看作常量，不能被修改。如果把这个函数定义为：</p>
+
+<pre><code>std::string &amp;get_name() const{
+   return name;
+}</code></pre>
+
+<p>这将导致错误，因为通过传递引用的方式可以对name进行修改，而后面的const是禁止修改。所以编译器将不会通过这种定义的。</p>
+
+<p>4.const对类的成员函数进行约束，禁止了成员函数对成员变量的修改，但是类的const对象可以调用这些函数。</p>
+
+<pre><code>const student jim_cst=jim;
+//jim_cst.set_name(&quot;jim_cst&quot;);
+jim_cst.get_age();</code></pre>
+
+<p>5.应尽可能使用const。可以保护数据不被修改。而在引用类型的函数参数中使用const 能够打破对参数的左值的要求。</p>
+
+<p>其他：</p>
+
+<ol>
+<li>
+<p>去除const 限制使用强制类型转换 <code>const_cast&lt; type &gt;(expression)</code></p>
+
+<pre><code>void set_default(student  &amp;stu){
+    stu.set_name(&quot;null&quot;);
+    stu.set_age(-1);
+}
+set_default(const_cast&lt;student &amp;&gt;(jim_cst));</code></pre>
+
+<p>jim_cst中的内容将被改变。</p>
+</li>
+
+<li>
+<p>使用mutable 修饰的类成员变量，可以被const限定的成员函数修改。例如</p>
+
+<pre><code>mutable string name;</code></pre>
+
+<p>如果不使用mutable 也可以通过对 this 进行类型转换，去除常量性，从而进行修改。例如： 为student类加入成员函数void set_default() const：</p>
+
+<pre><code>void student::set_default() const{
+    student * const fake_this=const_cast&lt;student *const&gt;(this);
+    fake_this-&gt;name=&quot;null&quot;;
+    fake_this-&gt;age=-1;
+}</code></pre>
+
+<p>因此可以推测const 对类成员函数的限制，实质是在这个函数作用域内对this指针所指向的对象（也就是对象自身）进行const限制（pointer -to- const）。 而在代码中的fake_this 则是个pointer-to-non-const。另外 this应该也被限制（可能是常量），不能指向其他的地址。</p>
+</li>
+</ol>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#cpp-ref">
+    		cpp <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/tags.html#const-ref">const <span>4</span></a></li>
+    
+  
+
+
+
+    </ul>
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+         <ul>
+     
+        <li class="next"><a href="/cpp/2014/03/28/c-plus-plus-variable-store" title="C++中的变量存储">&larr;上一篇 </a></li>
+      
+	  <li><a href="/archive.html">更多</a></li>
+	  
+        <li class="prev"><a href="/cpp/2014/03/26/c-plus-plus-implicit-memeber-function-in-class" title="C++中类的隐式成员函数"> 下一篇&rarr;</a></li>
+      
+      </ul>
+      </ul>
+    </div>
+    <hr>
+    
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 YeGe Blog
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+
