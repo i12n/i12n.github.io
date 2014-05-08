@@ -2,7 +2,7 @@
 layout: post
 title: "设计模式：单例模式"
 description: ""
-category: 
+category: Design Patterns
 tags: [ creational patterns ]
 ---
 {% include JB/setup %}
