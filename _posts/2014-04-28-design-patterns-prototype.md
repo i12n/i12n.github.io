@@ -50,4 +50,4 @@ tags: [  creational patterns  ]
 	fruit1->showName();
 	fruit2->showName();
 
-这篇写得文章不错 [点击查看](http://www.cnblogs.com/hegezhou_hot/archive/2010/12/04/1896471.html)
+这篇文章写得不错 [点击查看](http://www.cnblogs.com/hegezhou_hot/archive/2010/12/04/1896471.html)
