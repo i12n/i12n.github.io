@@ -9,15 +9,7 @@ group: navigation
 
 
 <div itemscope itemtype="http://data-vocabulary.org/Person"> 
-  <span itemprop="name">葛文茂</span>，
-  <span itemprop="role">在校学生</span>，
-  <span itemprop="address" itemscope itemtype="http://data-vocabulary.org/Address"> 
-	居住于 <span itemprop="addressLocality">北京</span>
-  </span>，
-  
-  email： <a href="mailto:gewenmao@gmail.com" itemprop="email">
-    gewenmao@gmail.com</a>，
-   主页 <a href="http://yege.me" itemprop="url">yege.me</a>
+
 </div>
 <br>
 
