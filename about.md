@@ -8,10 +8,7 @@ group: navigation
 
 
 
-<div itemscope itemtype="http://data-vocabulary.org/Person"> 
 
-</div>
-<br>
 
 
 目前，参与的是一个与虚拟仿真相关的项目。
