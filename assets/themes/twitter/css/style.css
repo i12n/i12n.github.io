@@ -63,3 +63,39 @@
   background: #57A957;
   border: 1px solid #4c964d;
   color: #FFF; }
+  
+  
+  
+
+  
+  
+.index_post{
+max-width:700px;
+border: 1px solid #e5e5e5;
+border-radius:5px;
+margin-bottom: 20px;
+padding:10px;
+
+}
+
+.index_post_foot{
+color: #888;
+height:20px;
+margin-top:10px;
+padding-top:10px;
+border-top: 1px solid #e5e5e5;
+font-size: 13px;
+
+}
+.index_post_foot_category{
+float:left;
+width:30%;
+}
+.index_post_foot_date{
+float:left;
+width:20%;
+}
+.index_post_foot_more{
+float:right;
+width:20%;
+}

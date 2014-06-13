@@ -17,6 +17,8 @@ tags: [creational patterns]
 
 当提供一个产品类库，指想显示它们的接口而不是实现时。
 
+<!-- more -->
+
 <img  src="{{ site.url }}/assets/images/2014051901.png" />
 
 在client 中仅使用AbstractProduct 和 AbstractFactory 类声明的接口。

@@ -14,6 +14,8 @@ tags: [ structural patterns ]
 
 适用性：不希望抽象和实现部分有固定的捆绑关系；抽象和实现部分可以通过生成子类的方法进行扩充；C++中对用户隐藏抽象的实现部分。
 
+<!-- more -->
+
 <img  src="{{ site.url }}/assets/images/2014061101.png" />
 
 Abstraction：定义抽象类接口；维护一个指向Implementor对象的指针

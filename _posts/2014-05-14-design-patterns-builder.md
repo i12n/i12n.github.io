@@ -11,6 +11,9 @@ tags: [creational patterns]
 
 建造者模式适用于当创建复杂对象的算法应该独立于该对象的组成部分以及他们的装配方式时，当构造过程必须允许被构造的对象有不同的表示时。
 
+<!-- more -->
+
+
  <img  src="{{ site.url }}/assets/images/2014051401.png" />
  
 Builder:为创建一个Product对象的各个部件指定抽象接口；

@@ -10,8 +10,10 @@ tags: [ structural patterns ]
 
 适用性：表示对象的部分-整体的层次结构，忽略单个对象与组合对象的不同。
 
+<!-- more -->
 
 <img  src="{{ site.url }}/assets/images/2014061201.png" />
+
 
 
 Component: 为组合中的对象声明接口；在适当情况下，实现所有类共有接口的缺省行为；声明一个接口用于访问和管理Component的子组件。

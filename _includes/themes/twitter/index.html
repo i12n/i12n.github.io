@@ -1,51 +1,33 @@
-<div class="page-header">
-  <h4>{{ site.posts.first.title }} {% if site.posts.first.tagline %}<small>{{site.posts.first.tagline}}</small>{% endif %}</h4>
-</div>
 
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="date">
-      <span>{{ site.posts.first.date | date: "%Y-%m-%d" }}</span>
-    </div>
-    <div class="content">
-      {{ site.posts.first.content  }}
-    </div>
 
-  {% unless site.posts.first.categories == empty %}
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      {% assign categories_list = site.posts.first.categories %}
-      {% include JB/categories_list %}
-    </ul>
-  {% endunless %}  
+{% for post in site.posts limit:5 %}
+<div class="index_post">
+  <section class="section">
+   <article>
+      <div class="page-header">
+        <h5><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a></h5>
+      </div>
 
-  {% unless site.posts.first.tags == empty %}
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      {% assign tags_list = site.posts.first.tags %}
-      {% include JB/tags_list %}
-    </ul>
-  {% endunless %}  
-
-    <hr>
-    <div class="pagination">
-      <ul>
-     
-        
-      {% if site.posts.first.next %}
-        <li class="next"><a href="{{ BASE_PATH }}{{ site.posts.first.next.url }}" title="{{ site.posts.first.next.title }}">&larr;上一篇 </a></li>
+	  
+      {% if post.content contains "<!-- more -->" %}
+        {{ post.content | split:"<!-- more -->" | first % }}
       {% else %}
-        <li class="next disabled"><a>&larr;上一篇 </a>
+        {{ post.content | strip_html | truncatewords:50 }}
       {% endif %}
-	  <li><a href="{{ BASE_PATH }}{{ site.JB.archive_path }}">更多</a></li>
-	  {% if site.posts.first.previous %}
-        <li class="prev"><a href="{{ BASE_PATH }}{{ site.posts.first.previous.url }}" title="{{ site.posts.first.previous.title }}"> 下一篇&rarr;</a></li>
-      {% else %}
-        <li class="prev disabled"><a> 下一篇&rarr;</a></li>
-      {% endif %}
-      </ul>
-    </div>
-    <hr>
-    {% include JB/comments %}
+		<div class="index_post_foot">
+			{% unless post.categories == empty %}
+				<div class="index_post_foot_category">
+					<span>分类 &nbsp;<a href="categories.html#{{ post.category }}-ref">{{ post.category }}</a></span>
+				</div>
+			{% endunless %}
+			<div class="index_post_foot_date">
+				<span>发表于 &nbsp; {{ post.date | date: "%Y-%m-%d" }}</span>
+			</div>
+			<div  class="index_post_foot_more">
+				<span><a  href="{{ BASE_PATH }}{{ post.url }}">Read more>>></a></span>
+			</div>
+		</div>
+    </article>
+  </section>
   </div>
-</div>
+{% endfor %}

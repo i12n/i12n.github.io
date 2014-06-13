@@ -12,6 +12,8 @@ tags: [structural patterns]
 
 适配器分为两类：类适配器和对象适配器。
 
+<!-- more -->
+
 <img  src="{{ site.url }}/assets/images/2014061001.png" />
 
 类适配器用一个具体的Adapter类对Adaptee和Target进行匹配；Adapter类可以重新定义Adaptee类的部分行为（因为继承关系，可以对虚函数重写）；
