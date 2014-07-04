@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Vortex Editor 与 LynX Prime 结合"
+title: "CM Labs Vortex Editor 与 LynX Prime 结合"
 description: ""
 category: VR
 tags: [ Vortex , VegaPrime ]
