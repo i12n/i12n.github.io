@@ -14,7 +14,7 @@ tags: [ Behavioral Patterns ]
 
 <!-- more -->
 
-<img  src="{{ site.url }}/assets/images/2014062303.png" />
+<img  src="{{ site.url }}/assets/images/2014063003.png" />
 
 Mediator:中介者定义一个接口与其他Colleague对象进行通信
 
