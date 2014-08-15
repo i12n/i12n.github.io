@@ -10,7 +10,7 @@ tags: [ html5 ]
 由于同源限制(same-origin policy)，以前XMLHttpRequest(XHR) 只限于同源通讯，
 不能进行跨源资源共享(Cross-Origin Resource Sharing,CORS) 。
 由于HTML 5的概念形成，在原有XHR的基础上提出了XMLHttpRequest Level2(XHR2 )，在XHR2中对CORS有了很好的支持。
-当前浏览器对XHR2支持情况,[点击查看](http://caniuse.com/xhr2)   
+当前浏览器对XHR2支持情况,[点击查看](http://caniuse.com/xhr2)
 在IE中，引入了XDomainRequest(XDR)类型对CORS进行支持，由此实现跨域通讯。
 在使用XHR2之前要进行检测，检查浏览器是否支持XHR2。
 
