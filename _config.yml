@@ -1,6 +1,6 @@
 # This is the default format. 
 # For more see: http://jekyllrb.com/docs/permalinks/
-permalink: /:categories/:year/:month/:day/:title 
+permalink: /:year/:categories/:title 
 encoding: utf-8
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 pygments: true

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "css 外边距合并"
+title: "CSS 外边距合并"
 description: ""
 category: web
 tags: [css]
