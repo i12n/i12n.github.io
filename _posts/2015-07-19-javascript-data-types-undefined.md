@@ -22,10 +22,15 @@ Undefined 数据类型只有一个值 `undefined`，当一个变量被声明但�
 	window.undefined
 </h2>
 
-`undefined` 值只存在于规范或文档中，在代码中看到的 undefined 通常是全局对象的属性 window.undefined，该属性的初始值就是 `undefined`。
+`undefined` 值只存在于规范或文档中，在代码中看到的 undefined 通常是全局对象属性 window.undefined，该属性的初始值就是 `undefined`。
+通常情况下 *console.log(a === undefined);* 中的 undefined 就是 window.undefined。
 
 	console.log(typeof undefined === 'undefined'); //true
-*在 ES3 中，window.undefined 的值是可以更改的；在ES5中，window.undefined 是不可更改的(non-configurable, non-writable)。*
+
+	var a;
+	console.log(a === undefined); //true
+
+*在 ES3 中，window.undefined 的值是可以更改的，因此在某些情况下要确保使用的是[真正的 `undefined` 值](#really-undefined)；在ES5中，window.undefined 是不可更改的(non-configurable, non-writable)。*
 
 另外，undefined 并不是保留字，可以在全局作用域链之外的作用域链中作为变量名使用。
 
@@ -46,10 +51,12 @@ Undefined 数据类型只有一个值 `undefined`，当一个变量被声明但�
 	var a;
 	console.log(a === undefined); // true
 	console.log(typeof a === "undefined") // true
+
 两者的区别在于在变量未声明时，前者会抛出异常，而后者却不会。
 
 	console.log(a === undefined); // ReferenceError
 	console.log(typeof a === 'undefined'); //true
+
 但是前者的优点在于，js压缩之后占用的字符个数更少。
 
 	console.log(a === undefined);
@@ -74,6 +81,8 @@ undefined 形参
 
 函数定义中使用 undefined 作为形参，而又不为它传递实参，那么它的值就是 `undefined` 值。这样做的目的是确保使用 a === undefined 这样的语句来判断变量初始化是有效的。
 
+*void 操作符也可以返回 `undefined` 值，在有些函数库中则是使用的是 void 0 来判断变量是否初始化，例如 a === void 0。使用 void 0 好处是字节数比较少。无论是使用 void 0，还是使用这种 undefined 形参，在保证真正的 undefined 值的同时，还避免了在作用域链上查找 window.undefined ,因此效率更高。*
+
 <h2 id="undefined-conversions">
 undefined 转型
 </h2>
@@ -83,6 +92,7 @@ undefined 转型
 	console.log(+undefined); // NaN
 	console.log(!undefined); // true
 	console.log('hello '+undefined); // hello undefined
+
 <h2 id="undefined-references">
 参考资料
 </h2>
@@ -91,6 +101,5 @@ undefined 转型
 [Understanding JavaScript’s 'undefined'](https://javascriptweblog.wordpress.com/2010/08/16/understanding-undefined-and-preventing-referenceerrors/) -- Angus Croll  
 [What (function (window, document, undefined) {})(window, document); really means](http://toddmotto.com/what-function-window-document-undefined-iife-really-means/) -- Todd Motto  
 [How Does This JavaScript/Jquery Syntax Work: (function( window, undefined ) { })(window)?](http://stackoverflow.com/questions/2716069/how-does-this-javascript-jquery-syntax-work-function-window-undefined) -- Stack Overflow   
-[How to Check for Undefined in Javascript](http://stackoverflow.com/questions/3390396/how-to-check-for-undefined-in-javascript) -- Stack Overflow 
-
-
+[How to Check for Undefined in Javascript](http://stackoverflow.com/questions/3390396/how-to-check-for-undefined-in-javascript) -- Stack Overflow   
+[Operators: void](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void) -- Mozilla Developer Network
