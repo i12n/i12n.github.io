@@ -17,23 +17,20 @@ tags: [JavaScript]
 
 在操作符进行操作时，很多时候会将操作数的值转换为所需要的类型值。
 
-1. 转换为 Bool 型值
-
-undefined null 0 NaN '' -> false
-
-2. 转换为 Number 型值
-
-undefined -> NaN
-null '' -> 0
-包含非数字字符的字符串 ->NaN
-全是数字字符的字符串 -> 对应的数字
-对象 先 valueOf() , 如果转换后是 NaN ，那么再 toString()
+1. 转换为 Bool 型值  
+undefined null 0 NaN \'\' -> false  
+2. 转换为 Number 型值  
+undefined -> NaN  
+null \'\' -> 0  
+包含非数字字符的字符串 ->NaN  
+全是数字字符的字符串 -> 对应的数字  
+对象 先 valueOf() , 如果转换后是 NaN ，那么再 toString()  
 
 <h2 id="bool-operators">
 布尔操作符：或和与
 </h2>
 
-|| 和 && 两个操作符返回的不一定是 true 和 false，其返回值的规则如下：
+\|\| 和 && 两个操作符返回的不一定是 true 和 false，其返回值的规则如下：
 
     var a = b || c;  // a = b ? b : c
     var a = b && c;  // a = !b ? b : c
@@ -53,4 +50,6 @@ null '' -> 0
 相等操作符
 </h2>
 
-undefined == null 为 true；
+undefined == null 为 true；  
+\'\' == false 为true
+
