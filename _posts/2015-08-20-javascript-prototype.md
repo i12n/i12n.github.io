@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "JavaScript prototype"
-description: ""
-category: 
-tags: []
+description: "JavaScript 原型"
+category: web 
+tags: [JavaScript]
 ---
 {% include JB/setup %}
 
