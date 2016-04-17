@@ -3,7 +3,7 @@ layout: post
 title: "Generators 总结"
 description: ""
 category: 
-tags: []
+tags: [ES6, Generators, co]
 ---
 {% include JB/setup %}
 
