@@ -2,7 +2,7 @@
 layout: post
 title: "Generators 总结"
 description: ""
-category: 
+category: [web]
 tags: [ES6, Generators, co]
 ---
 {% include JB/setup %}
