@@ -2,8 +2,8 @@
 layout: post
 title: "使用 nightmare 进行页面测试（二）"
 description: "nightmare API 介绍"
-category: web
-tags: [nightmare]
+category: [ web ]
+tags: [ nightmare ]
 ---
 {% include JB/setup %}
 
@@ -73,7 +73,7 @@ evaluate(fn[, arg1, arg2 ...]) 方法是在浏览器端执行 fn 函数，因此
          });
 
 要注意以下几点：
-首先，evaluate 方法是在浏览器端执行 fn 函数，也就是说 fn 函数的执行环境是浏览器环境，而不是 node 环境，因此一些浏览器不支持的 ES6 特性，在 fn 函数中不要使用
+首先，evaluate() 方法是在浏览器端执行 fn 函数，也就是说 fn 函数的执行环境是浏览器环境，而不是 node 环境，因此一些浏览器不支持的 ES6 特性，在 fn 函数中不要使用
 其次，浏览器中的dom信息只能通过fn的返回值来获得，而提供给fn使用的数据只能通过参数传递，也就是说不要使用全局变量的方式进行数据传递
 
 例如：
@@ -91,7 +91,7 @@ evaluate(fn[, arg1, arg2 ...]) 方法是在浏览器端执行 fn 函数，因此
          })
          .then();
 
-[关于evaluate 的坑](https://github.com/rosshinkley/nightmare-examples/issues/14)
+[关于evaluate() 的坑](https://github.com/rosshinkley/nightmare-examples/issues/14)
 
 - **nightmare 的 .wait() 方法**
 
