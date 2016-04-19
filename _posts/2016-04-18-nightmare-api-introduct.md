@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "使用 nightmare 进行页面测试（二）"
+title: "nightmare API 简单介绍"
 description: "nightmare API 介绍"
 category: [ web ]
 tags: [ nightmare ]

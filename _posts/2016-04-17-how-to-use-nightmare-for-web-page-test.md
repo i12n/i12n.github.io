@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "使用 nightmare 进行页面测试（一）"
+title: "使用 nightmare 进行页面测试介绍"
 description: "nightmare 测试介绍"
 category: [web]
 tags: ['nightmare']
