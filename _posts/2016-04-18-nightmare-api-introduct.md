@@ -13,6 +13,7 @@ nightmare 的 API 不是特别的多，平常使用比较多的主要是配置 n
 
 ## 相关配置 API
 
+API                             |   描述                                                |
 --------------------------------|------------------------------------------------------
 Nightmare(options)              |   初始化实例，options 为设置 Electron 浏览窗口的配置，[参考文档](https://github.com/electron/electron/blob/master/docs/api/browser-window.md#new-browserwindowoptions)
 waitTimeout (default: 30s)      |   wait 等待最长时间，超过这个时间还未返回，则抛出异常
@@ -29,6 +30,8 @@ switches                        |   chrome 的一些配置，[参考文档](http
 
 ## 与页面交互API
 
+
+API                             |   描述
 ------------------------------- | -------------------------------------------------------
 .goto(url)                      |   加载 url 页面  
 .back()                         |   后退到前一页   
