@@ -34,7 +34,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
     - 如果 rx 和 ry 有一个被设置, 则全部取这个被设置的值
     - rx 的最大值为 width 的一半, ry 的最大值为 height 的一半
 
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/e1we5aL0/1/)
     
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/e1we5aL0/1/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -44,7 +44,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
         cx      圆心x位置, 默认为 0
         cy      圆心y位置, 默认为 0
 
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/mhxt6g38/1/)
         
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/mhxt6g38/1/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -55,7 +55,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
         cx      圆心x位置, 默认为 0
         cy      圆心y位置, 默认为 0
 
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/df9njock/)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/df9njock/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -66,7 +66,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
         y1      起点y, 默认为 0
         y2      终点y, 默认为 0
    
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/z0Lzozb8)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/z0Lzozb8/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -74,7 +74,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
         
         points  折线上的点集，每个点都是一个坐标
 
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/jnq0e978)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/jnq0e978/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -82,7 +82,7 @@ SVG 提供了一些基本的形状用于图形绘制，这些形状可以直接�
 
         points  折线上的点集，每个点都是一个坐标
 
-    使用示例如下
+    [代码示例](http://jsfiddle.net/moonatcs/mr0txav1)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/mr0txav1/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -163,15 +163,15 @@ SVG 的 路径 `<path>` 功能非常强大，前面介绍的六个基本图形�
 
 代码示例:
 
-- 直线:
+- [直线](http://jsfiddle.net/moonatcs/byx9v2qz)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/byx9v2qz/embedded/html,result/dark" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-- 贝塞尔曲线:
+- [贝塞尔曲线](http://jsfiddle.net/moonatcs/wmozwd8e)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/wmozwd8e/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-- 弧线：
+- [弧线](http://jsfiddle.net/moonatcs/pvnwqg5t)
 
     <iframe width="100%" height="300" src="//jsfiddle.net/moonatcs/pvnwqg5t/embedded/html,result/dark/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
