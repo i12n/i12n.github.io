@@ -149,6 +149,6 @@ SVG transform 属性和 HTML transform 属性的区别在于前者的坐标变�
 ## 相关资料：
  - [http://www.w3cplus.com/html5/svg-coordinate-systems.html](http://www.w3cplus.com/html5/svg-coordinate-systems.html)  
  - [http://www.w3cplus.com/html5/svg-transformations.html](http://www.w3cplus.com/html5/svg-transformations.html)  
-- [http://www.w3cplus.com/html5/nesting-svgs.html](http://www.w3cplus.com/html5/nesting-svgs.html)  
-- [https://www.w3.org/TR/SVG/coords.html](https://www.w3.org/TR/SVG/coords.html)
-- [https://css-tricks.com/transforms-on-svg-elements/](https://css-tricks.com/transforms-on-svg-elements/)
+ - [http://www.w3cplus.com/html5/nesting-svgs.html](http://www.w3cplus.com/html5/nesting-svgs.html)  
+ - [https://www.w3.org/TR/SVG/coords.html](https://www.w3.org/TR/SVG/coords.html)  
+ - [https://css-tricks.com/transforms-on-svg-elements/](https://css-tricks.com/transforms-on-svg-elements/)
