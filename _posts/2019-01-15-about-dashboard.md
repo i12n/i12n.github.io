@@ -38,22 +38,20 @@ tags: [ dashboard ]
     为了满足数据的实时性，需要 Dashboard 不停的发送请求，并将请求到的数据渲染到页面中。这个过程可以通过定时器实现：
 
     ```js
-        fetchData() {
-            request
-                .get('url')
-                .then(data => { renderData() });
+    fetchData() {
+        request
+            .get('url')
+            .then(data => { renderData() });
 
-            setTimeout(() => {
-                fetchData()
-            }, 1000);
-        }
+        setTimeout(() => {
+            fetchData()
+        }, 1000);
+    }
     ```
 
 - **数据异常策略**
 
-    当数据请求发生异常，要避免将异常展示在页面上，同时也要避免某个接口异常使整个 Dashboard 不可用。
-
-    对于频繁请求的接口，偶然发生的一次异常，不应该影响用户的体验；为了降低风险，对低频的接口适当增加请求频次。
+    当数据请求发生异常，要避免将异常展示在页面上，同时也要避免某个接口异常使整个 Dashboard 不可用。对于频繁请求的接口，偶然发生的一次异常，不应该影响用户的体验；为了降低风险，对低频的接口适当增加请求频次。
 
 ## 全屏适配
 
@@ -83,6 +81,7 @@ tags: [ dashboard ]
     存在的弊端：由于 chrome 的限制，字体的 font-size 小于 12px不生效，当屏幕比较小时，并不能等比缩放。另外，当页面高/宽比值较大的时候，也会导致宽度不能较好的适配。
 
 - **全屏**
+
     [requestFullScreen](https://developer.mozilla.org/en-US/docs/Web/API/Element/requestFullScreen) 实现页面全屏，浏览器禁止自动触发全屏，只能通过用户的交互操作触发全屏。
 
     ```js
@@ -120,6 +119,7 @@ tags: [ dashboard ]
 - **内部的时序性**
 
     单个动画效果的内部是由一组动作组成，下图所示的是翻页切换动画的实现步骤（由 UED 同学提供），它可以指导前端 RD 按部就班的实现动画。
+
     ![animation detail](/assets/images/web/dashboard/animation-detail.png)
 
 ## 参考资料
