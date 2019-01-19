@@ -10,4 +10,4 @@ tags: [ 微信公众平台, Django ]
 主要功能是，在手机上使用微信公众帐号把一些信息发送到服务器并提供给web端显示。
 整个项目用Django开发，使用微信公众平台提供的api完成微信端的信息接收与响应。
 <!-- more -->
-项目地址：[点击查看](https://github.com/unknownGe/yege_life.git)
+项目地址：[点击查看](https://github.com/gewenmao/yege_life.git)

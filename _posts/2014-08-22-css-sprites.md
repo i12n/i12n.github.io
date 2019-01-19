@@ -23,7 +23,7 @@ background-image 属性都对应一个  HTTP requests ，将多个图片集成�
 	#close {
 	    width: 30px;
 	    height: 30px;
-	    background-image: url('http://blog.yege.me/assets/images/web/css/2014082201.png');
+	    background-image: url('/assets/images/web/css/2014082201.png');
 	    display: inline-block;
 		vertical-align: middle
 	}
@@ -31,14 +31,14 @@ background-image 属性都对应一个  HTTP requests ，将多个图片集成�
 	    background-position: -44px 0px;
 	}
 </style>
-在下面的例子中，将两个关闭图标合并到一个图片中 ![](http://blog.yege.me/assets/images/web/css/2014082201.png) ,
+在下面的例子中，将两个关闭图标合并到一个图片中 ![](/assets/images/web/css/2014082201.png) ,
 然后通过 CSS 来控制显示具体的图标 
 <a id="close" href="#" >
 </a>
 主要代码：
 
 	a {
-	    background-image: url('http://blog.yege.me/assets/images/web/css/2014082201.png');
+	    background-image: url('/assets/images/web/css/2014082201.png');
 	    display: inline-block;
 	}
 	a:hover {
