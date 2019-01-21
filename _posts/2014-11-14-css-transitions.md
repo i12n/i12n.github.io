@@ -12,7 +12,7 @@ CSS 提供了两种动画效果，分别为 **transitions**  和 **animations** 
 
 <!-- more -->
 
-<iframe width="100%" height="200" src="http://jsfiddle.net/moonatcs/Lra1saLr/embedded/result,css,html/" allowfullscreen="allowfullscreen" frameborder="0">
+<iframe width="100%" height="200" src="//jsfiddle.net/moonatcs/Lra1saLr/embedded/result,css,html/" allowfullscreen="allowfullscreen" frameborder="0">
 </iframe>
 
 ##CSS Transitions 四个属性值
@@ -75,7 +75,7 @@ CSS 提供了两种动画效果，分别为 **transitions**  和 **animations** 
 	
 	其中包含有 ease、linear、ease-in、ease-out、ease-in-out 等函数。
 	
-	<iframe width="100%" height="330" src="http://jsfiddle.net/moonatcs/wbzrmmkz/embedded/result,css,html" allowfullscreen="allowfullscreen" frameborder="0">
+	<iframe width="100%" height="330" src="//jsfiddle.net/moonatcs/wbzrmmkz/embedded/result,css,html" allowfullscreen="allowfullscreen" frameborder="0">
 	</iframe>
 	
 	在 [CSS-TRICKS][1] 提供关于 transition-timing-function 更详细的介绍。
@@ -97,7 +97,7 @@ CSS 提供了两种动画效果，分别为 **transitions**  和 **animations** 
 
 当 transition 完成之后触发事件 transitionend（ webkitTransitionEnd MSTransitionEnd oTransitionEnd ），不同的浏览器定义的事件名称不同。点击 [MDN][2] 可以阅读关于 transitionend 更多介绍。
 
-<iframe width="100%" height="200" src="http://jsfiddle.net/moonatcs/7L5bf5h2/embedded/result,js,html,css" allowfullscreen="allowfullscreen" frameborder="0">
+<iframe width="100%" height="200" src="//jsfiddle.net/moonatcs/7L5bf5h2/embedded/result,js,html,css" allowfullscreen="allowfullscreen" frameborder="0">
 </iframe>
 
 ##相关资料

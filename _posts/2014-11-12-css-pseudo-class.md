@@ -21,7 +21,7 @@ tags: [ css ]
 2. `:focus` 伪类
 	用法：*e*:focus 向拥有键盘输入焦点的元素添加样式。
 	
-	<iframe width="100%" height="100" src="http://jsfiddle.net/moonatcs/x0exrxhx/embedded/result,html,css"  frameborder="0">
+	<iframe width="100%" height="100" src="//jsfiddle.net/moonatcs/x0exrxhx/embedded/result,html,css"  frameborder="0">
 	</iframe>
 	
 3. `:target` 伪类
@@ -37,7 +37,7 @@ tags: [ css ]
 		<p id="answer">答案是： <span>2</span></p>
 	`:target` 能用于 `display: none` 的元素(从上面的代码就可以看出)，可作为开/关控制元素的是否可见。维基百科中引证链接大量使用了 `:target` , 可以很方便的找到链接所对应的引证。使用 `:target` 可以实现 Tab 切换效果（控制 z-index ）。
 
-	<iframe width="100%" height="200" src="http://jsfiddle.net/moonatcs/g3mgoz97/embedded/result,html,css" allowfullscreen="allowfullscreen" frameborder="0">
+	<iframe width="100%" height="200" src="//jsfiddle.net/moonatcs/g3mgoz97/embedded/result,html,css" allowfullscreen="allowfullscreen" frameborder="0">
 	</iframe>
 	
 	[CSS-TRICKS][1] 提到可以使用 `:target` 三种情况：  
@@ -77,7 +77,7 @@ tags: [ css ]
  
  使用 :nth-child(n) 可以设置表格交替效果：
  
-<iframe width="100%" height="200" src="http://jsfiddle.net/moonatcs/wcetw91j/embedded/result,html,css" allowfullscreen="allowfullscreen" frameborder="0">
+<iframe width="100%" height="200" src="//jsfiddle.net/moonatcs/wcetw91j/embedded/result,html,css" allowfullscreen="allowfullscreen" frameborder="0">
 </iframe>
 
 ` e:nth-child(n) ` 与 ` e :nth-child(n) ` 的区别：

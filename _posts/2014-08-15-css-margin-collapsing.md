@@ -26,7 +26,7 @@ CSS 外边框合并（margin collapsing）是指普通文档流中块框的垂�
 	
 	![]({{ site.url }}/assets/images/web/css/2014081501.png)
 	
-	[简单示例](http://jsfiddle.net/p70tyedx/)
+	[简单示例](//jsfiddle.net/p70tyedx/)
 
 2. 父元素和首/尾子元素合并（Parent and first/last child）
 	
@@ -53,5 +53,5 @@ CSS 外边框合并（margin collapsing）是指普通文档流中块框的垂�
 	
 	![]({{ site.url }}/assets/images/web/css/2014081504.png)
 	
-	[简单示例](http://jsfiddle.net/Lg1kz592/)
+	[简单示例](//jsfiddle.net/Lg1kz592/)
 	

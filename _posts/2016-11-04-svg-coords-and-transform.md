@@ -40,7 +40,7 @@ SVG 的坐标系统包括视窗坐标系(viewport coordinate system) 和 用户�
 
 除此之外 transform 属性也会进行坐标变换，它可以定义平移、旋转和缩放等变换操作。而且同一个元素的可以组合使用变换操作，每一次变换都是基于上一次变换生成的坐标系。
 
-[代码示例](https://jsfiddle.net/moonatcs/9kwe7tbw/)
+[代码示例](//jsfiddle.net/moonatcs/9kwe7tbw/)
 
 <script async src="//jsfiddle.net/moonatcs/9kwe7tbw/embed/html,result/dark/"></script>
 
@@ -48,7 +48,7 @@ SVG 的坐标系统包括视窗坐标系(viewport coordinate system) 和 用户�
 
 在 svg 元素中可以嵌套一个 svg 子元素，这个 svg 子元素通过 x、y 属性来确定位置。svg 子元素中的新视窗坐标系和新用户坐标系都是以x 和 y 属性变换之后的值为原点，单位大小与 svg 子元素所在用户坐标系的单位大小一致。
 
-[代码示例](https://jsfiddle.net/moonatcs/eye9xj7e/)
+[代码示例](//jsfiddle.net/moonatcs/eye9xj7e/)
 
 <script async src="//jsfiddle.net/moonatcs/eye9xj7e/embed/html,result/dark/"></script>
 
@@ -117,7 +117,7 @@ SVG transform 属性和 HTML transform 属性的区别在于前者的坐标变�
     [xpre, ypre, 1] = T1·T2· ... ·Tn·[xcur, ycur, 1]
 
 例如对于下面的 SVG:
-[代码示例](https://jsfiddle.net/moonatcs/woqmzce9/)
+[代码示例](//jsfiddle.net/moonatcs/woqmzce9/)
 
     <svg veiwBox="0 0 200 200">
       <g transform="translate(100 20) scale(2) rotate(45)">
