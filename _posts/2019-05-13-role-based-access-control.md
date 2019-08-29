@@ -90,6 +90,7 @@ C 等级用户可以访问 <=3 级文件
 ## RBAC 基于角色的访问控制
 
 角色关联权限
+
 Role | Read  |  Write | Execute |
 -|-|-|-
 Role1 | YES | YES | YES |
@@ -97,8 +98,9 @@ Role2 | YES | YES | NO |
 Role3 | YES | NO |  NO |
 
 用户关联角色
+
 User | Role1  |  Role2 | Role3 |
--|:-|-|-
+-|-|-|-
 User1 | YES | NO | NO |
 User2 | YES | YES | NO |
 User3 | YES | NO |  NO |
@@ -106,7 +108,7 @@ User3 | YES | NO |  NO |
 用户权限列表
 
 User | Permissions|
--|:-|-
+-|:-
 User1 | Read, Write, Execute |
 User2 | Read, Write, Execute |
 User3 | Read |
@@ -154,7 +156,7 @@ User3 | Read |
     - 按钮可见，不可操作
     - 按钮不可见
 
-  无权限不可见，代码实例：
+  无权限不可见，React 实现的代码简单实例：
 
   ```js
   function authorize(authorities = [], authId = '') {
@@ -185,17 +187,17 @@ User3 | Read |
 
 ### 数据权限控制
 
-  需要，后端通过 Token 做权限控制
+ 前端的权限控制无法做到数据安全，依然需要后端做权限控制。
 
 ### 权限树与权限列表
 
 ![auth-tree.png](/assets/images/web/rbac/auth-tree.png)
 
-权限的是一个列表，某些时候以树的形式展现。
+权限的是一个列表，某些时候以树的形式展现。在上图中，是为角色配置权限的场景，权限以树状结构去展现是为了提高用户的交互体验。
 
-### 一次授权（临时授权）
+### 一次授权
 
-用户 A 没有某个权限，用户 B 拥有某个权限；B 可以授权给 A 这个权限，使 A 拥有临时权限（次数/时效限制）。
+一次授权是临时授权。例如，用户 A 没有某个权限，用户 B 拥有某个权限；B 可以授权给 A 这个权限，使 A 拥有临时权限（次数/时效限制）。
 
 - B 用户登陆，得到 临时 Token
 - A 用户获得临时权限
