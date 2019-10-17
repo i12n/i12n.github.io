@@ -82,3 +82,6 @@ Scratch 以 **积木** 的形式组织代码，每一块积木都是具有特
     以火箭飞行的时长为分数，当发生碰撞之后分数不再增加。
 
     ![rocket-fly-score-coding](/assets/images/scratch/rocket-fly-score-coding.png)
+
+发现微软也有一款类似的产品：
+[makecode](https://www.microsoft.com/zh-cn/makecode)
